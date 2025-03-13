@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Learninghigh</title>
+<!-- Google Font: Source Sans Pro -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+
+<link rel="stylesheet" th:href="@{/bootstrap/plugins/fontawesome-free/css/all.min.css}">
+<!-- Theme style -->
+<link rel="stylesheet" th:href="@{/bootstrap/dist/css/adminlte.min.css}">
+<style>
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	font-family: Arial, sans-serif;
+	background-color: #FFFFFF;
+	color: #333;
+}
+
+div.wraper {
+	width: 600px;
+	height: 600px;
+	margin: 0 auto;
+	margin-top: 5%;
+}
+div.container{
+	width: 600px;
+	height: auto;
+	padding: 50px;
+	margin: 50px auto;
+	border: 1px solid #ddd;
+    border-radius: 10px;
+}
+div.login-logo{
+	padding-top: 50px;
+}
+form.login-form{
+	width:500px;
+	margin: 0 auto;
+}
+div.input-group{
+	padding-top: 10px;
+}
+div.input-group label{
+	padding: 8px;
+	font-size: 15px;
+	float: left;
+}
+input.form-control{
+	width: 100%;
+	padding-left: 10px;
+	margin-left: 10px;
+	background-color: #E6E6E6;	
+}
+
+
+.input-group>.custom-select:not(:first-child), .input-group>.form-control:not(:first-child) {
+	border-radius:5px;
+}
+
+div.submit{
+	padding: 10px;
+	margin: 20px 0 16px 10px;
+	height: 60px;
+	background-color: #0F410E;
+	border-radius: 5px;
+}
+div.submit button{
+	color: white;
+	font-size: 20px;
+	letter-spacing: 8px;
+}
+div.Label{
+	padding: 10px;
+	margin: 20px 0 16px 10px;
+	height: 40px;
+	background-color: #0F410E;
+	border-radius: 5px;
+	cursor: pointer;
+}
+div.Label label{
+	padding: 0;
+	color: white;
+	font-size: 15px;
+	cursor: pointer;
+}
+div img.logoImg {
+	width: 140px;
+	height: 60px;
+}
+
+div.input-group input{
+    background-color: #FFFFFF;
+}
+
+.login-form p{
+    margin: 10px 0 0 10px;
+    font-family: NanumSquare_ac ExtraBold;
+    font-size: 20px;
+    color: #5D5D5D;
+}
+
+div.MidButton{
+	padding: 10px;
+	margin: 20px 0 16px 10px;
+	height: 60px;
+	background-color: #0F410E;
+	border-radius: 5px;
+}
+div.MidButton button{
+	color: white;
+	font-size: 20px;
+	letter-spacing: 8px;
+}
+div.input-group{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	text-align: center;
+}
+
+</style>
+</head>
+<body>
+	<div class="wraper">
+		<div class="container">
+			<!-- /.login-logo -->
+			<div class="logo" style="display: flex; align-items: center; margin: 20px;">
+				<img th:src="@{/images/logo.png}" alt="logoImg" class="logoImg">
+				<h3 class="login-box-msg" style="font-family: NanumSquare_ac; padding: 0; margin-left: 20px;"><strong>이용자 회원가입</strong></h5>
+			</div>
+			<form id="registForm" action="join/post" method="post" class="login-form" enctype="multipart/form-data">
+				<div class="container_group">
+					<div class="picture" id="pictureView"
+						style="border: 1px solid green; height: 260px; width: 200px; margin: 30px auto;">
+					</div>
+					<div class="picture_file" style="width: 100%;">
+						<p>프로필 사진</p>
+						<div class="file_container" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; margin-top: 10px;">
+							<input id="inputFileName" class="form-control" type="text" name="tempPicture" style="width: 80%;" disabled />
+							<input type="file" id="inputFile" name="picture" style="display: none;" onchange="picture_go();" />
+							<div class="Label">
+								<label for="inputFile" class=" label_file">파일선택</label>
+							</div>
+						</div>
+						<!-- file_container -->
+					</div>
+					<!-- picture_file -->
+				</div>
+                <p>아이디</p>
+				<div class="input-group mb-3">
+					<input type="text" id="mid" class="form-control radius" name="mid" placeholder="아이디" onblur="validation(this.name);"
+					onkeyup="this.value=this.value.replace(/[^a-zA-Z0-9]/g, '');" value="">
+					<div class="Label">
+						<label class="label_file" onclick="idCheck_go();">중복확인</label>
+					</div>
+				</div>
+                <p>비밀번호</p>
+                <div class="input-group mb-3">
+					<input type="password" class="form-control radius" name="pwd" placeholder="비밀번호" value="">
+				</div>
+                <p>이름</p>
+                <div class="input-group mb-3">
+					<input type="text" class="form-control radius" name="name" placeholder="이름" value="">
+				</div>
+				<p>생년월일</p>
+                <div class="input-group mb-3">
+					<input type="date" class="form-control radius" name="birth" placeholder="생년월일" value="">
+				</div>
+                <p>전화번호</p>
+                <div class="input-group mb-3">
+					<input type="text" class="form-control radius" name="phone" placeholder="전화번호" value="" required oninput="handlePhoneInput(this)" maxlength="13">
+				</div>
+                <p>이메일</p>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control radius" name="email" placeholder="이메일" value="">
+                </div>
+                <p>주소</p>
+                <div class="input-group mb-3">
+					<input type="text" class="form-control radius" name="address" placeholder="주소" value="">
+                </div>
+				<div class="submit">
+					<button type="button" class="btn btn-block" style="font-family: NanumSquare_ac;" onclick="regist_submit(event);"><strong>회원가입</strong></button>
+				</div>
+				<input type="text" style="display: none;" name="authorities" value="ROLE_USER">
+			</form>
+		</div>
+	</div>
+	<br/>
+	<br/>
+	<br/>
+	<br/>
+
+<th:block th:insert="~{module/common_js}"></th:block>
+<script th:src="@{/js/regist.js}"></script>
+<script>
+	//전화번호 유효성 검사 함수
+	function handlePhoneInput(input) {
+		input.value = input.value
+			.replace(/[^0-9]/g, '') // 숫자만 입력
+			.replace(/^(\d{3})(\d{4})(\d{4})$/, '$1-$2-$3'); // 하이픈 자동 추가
+	}
+
+	
+	function regist_submit(event) {
+		if (!event) event = window.event; // 이벤트 객체 없을 때 대비
+		if (event) event.preventDefault(); // 기본 제출 방지
+	
+		// 폼 요소 가져오기
+		const form = document.getElementById('registForm');
+		const midInput = form.querySelector('input[name="mid"]');
+		const pwdInput = form.querySelector('input[name="pwd"]');
+		const nameInput = form.querySelector('input[name="name"]');
+		const phoneInput = form.querySelector('input[name="phone"]');
+		const birthInput = form.querySelector('input[name="birth"]');
+		const emailInput = form.querySelector('input[name="email"]');
+		const pictureInput = form.querySelector('input[type="file"][name="picture"]');
+		const addressInput = form.querySelector('input[name="address"]');
+		const authoritiesInput = form.querySelector('input[name="authorities"]');
+	
+		// 필수 입력값 검사
+		if (!midInput.value.trim()) {
+			alert('아이디를 입력해주세요.');
+			midInput.focus();
+			return false;
+		}
+		if (!nameInput.value.trim()) {
+			alert('이름을 입력해주세요.');
+			nameInput.focus();
+			return false;
+		}
+		if (!pwdInput.value.trim()) {
+			alert('비밀번호를 입력해주세요.');
+			pwdInput.focus();
+			return false;
+		}
+		if (!birthInput.value) {
+			alert('생년월일을 선택해주세요.');
+			birthInput.focus();
+			return false;
+		}
+		if (!emailInput.value.trim()) {
+			alert('이메일을 입력해주세요.');
+			emailInput.focus();
+			return false;
+		}
+		if (!phoneInput.value.trim()) {
+			alert('전화번호를 정확히 입력해주세요.');
+			phoneInput.focus();
+			return false;
+		}
+		if (!addressInput.value.trim()) {
+			alert('주소를 입력해주세요.');
+			departmentInput.focus();
+			return false;
+		}
+		if (!pictureInput.files || pictureInput.files.length === 0) {
+			alert('사진을 등록해주세요.');
+			return false;
+		}
+	
+	 // 모든 검사 통과 시 폼 제출 (POST 요청)
+		form.method = "POST"; // 명시적으로 POST 설정
+		form.action = "join/post"; // 액션 URL 설정
+		form.enctype = "multipart/form-data"; // 파일 업로드를 위한 인코딩 설정
+		form.submit();
+	}
+	</script>
+	<script>
+		var valid_data = {
+			email:{
+				pattern:/^[a-z0-9\.\-_]+@([a-z0-9\-]+\.)+[a-z]{2,6}$/g,
+				message:"이메일 형식이 아닙니다."
+			},
+			name:{
+				pattern:/^[가-힣]{2,6}$/g,
+				message:"이름은 한글 2~6글자 입니다."
+			},
+			mid:{
+				pattern:/^[a-zA-Z0-9]{4,12}$/,
+				message:"아이디는 4~12자의 영문, 숫자만 가능합니다."
+			},
+			pwd:{
+				pattern:/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,20}$/g,
+				message:"패스워드 형식이 올바르지 않습니다.\n영문자 숫자 특수문자 조합으로 8~20글자로 하세요."
+			}
+		}
+
+		function validation(elementName){			
+			let flag = true;
+			let regExp = valid_data[elementName].pattern;
+			let message =  valid_data[elementName].message;
+			
+			let input = $('input[name="'+elementName+'"]');		
+			
+			if(input.val()){ 
+				if(!input.val().match(regExp)){
+					alert(message);
+					input.val('');
+					flag=false;
+				}	
+			}else{
+				flag=false;
+			}
+			
+			return flag;
+		}
+
+		var checkID = "";
+		function idCheck_go(){
+			//alert("click idCheck");
+			let inputID = $('input[name="mid"]');
+			if(!inputID.val()){
+				alert("아이디를 입력하세요");
+				inputID.focus();
+				return;
+			}
+			
+			if(!validation('mid')) return;
+			$.ajax({
+				url: "idCheck?mid="+inputID.val(),
+				method:"get",
+				success:function(data){				
+					if(data=="duplicated"){
+						alert("이미 사용중인 아이디입니다.");
+						inputID.focus();
+						return;
+					}else{
+						alert("사용 가능한 아이디입니다.")
+						checkID = inputID.val();
+						$('input[name="pwd"]').focus();
+						return;
+					}
+				},
+				error:function(error){
+					AjaxErrorSecurityRedirectHandler(error.status);
+				}
+			});
+		}
+
+
+	</script>
+
+</body>
+</html>
+
+

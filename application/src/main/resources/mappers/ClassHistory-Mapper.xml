@@ -66,8 +66,8 @@
     </select>
     
     <insert id="insertEnroll" parameterType="classHistory">
-        insert into class_history(chno, mid, clno, regDate, class_history, complete)
-        values(CLASS_HISTORY_SEQ.nextval, #{mid}, #{clno}, sysdate, 0, 0)
+        insert into class_history(chno, mid, clno, regDate, class_history, complete, state)
+        values(CLASS_HISTORY_SEQ.nextval, #{mid}, #{clno}, sysdate, 0, 0, 0)
     </insert>
     
     <update id="updateHistory" parameterType="classHistory">

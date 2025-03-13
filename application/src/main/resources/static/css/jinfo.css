@@ -1,0 +1,167 @@
+*{
+    font-family: NanumSquare_ac;
+}
+
+div.info{
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    margin: 70px;
+}
+div.member-profile{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+div.detail-img{
+    width:80px;
+    height:110px;
+    background-color: #F4F6FA;
+    display: flex;    
+}
+div.mimg{
+    width: 110px;
+    height: 150px;
+    background-color: #F4F6FA;
+    display: flex;
+} 
+
+div.mimg div.modify-img{
+    width: 20px;
+    height: 20px;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+div.mstring{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+div.mstring span{
+    margin:10px;
+    font-family: NanumSquare_ac ExtraBold;
+}
+
+table.info-table {
+    width: 100%;
+    margin-top: 30px;
+    border-collapse: collapse;
+}
+table.info-modify-table{
+    width: 100%;
+    margin-top: 30px;
+    border-collapse: collapse;    
+}
+
+.info-table tr{
+    margin: 10px;
+    border: 1px solid #ddd;
+    height: 50px;
+}
+
+.info-modify-table tr{
+    margin: 10px;
+    height: 50px;    
+}
+table .th{
+    width: 135px;
+    color: var(--gray70);
+    font-size: 14px;
+    line-height: 40px;
+    text-align: center;
+}
+table .th p{
+    font-family: NanumSquare_ac ExtraBold;
+    margin: 0;
+}
+table .td {
+    border-bottom: 1px solid var(--gray30);
+    text-align: left;
+    padding: 0 24px;
+}
+.info-modify-table .td .info-modify-input{
+    width: 100%;
+    height: 30px;
+}
+
+
+div.span{
+    display: flex;
+    align-items: center;
+}
+div.btn{
+    display: flex;
+    justify-content: flex-end;
+    padding: 20px;
+}
+button.info-modify{
+    width: 150px;
+    height: 40px;
+    background-color: #00A86B;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-family: NanumSquare_ac ExtraBold;
+    font-size: medium;
+    cursor: pointer;
+}
+
+div.input-group{
+	display: flex;
+    padding-top: 10px;
+	justify-content: space-between;
+	align-items: center;
+	text-align: center;
+}
+div.input-group label{
+	padding: 8px;
+	font-size: 15px;
+	float: left;
+}
+input.form-control{
+	width: 100%;
+	padding-left: 10px;
+	margin-left: 10px;
+	background-color: #E6E6E6;	
+}
+
+
+.input-group>.custom-select:not(:first-child), .input-group>.form-control:not(:first-child) {
+	border-radius:5px;
+}
+
+div.Label{
+    width: 91px;
+    padding: 10px;
+    height: 11px;
+    background-color: #0F410E;
+    border-radius: 5px;
+    cursor: pointer;
+}
+div.Label label{
+	padding: 0;
+	color: white;
+	font-size: 15px;
+	cursor: pointer;
+}
+
+div.picture_file{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+div.container_group{
+    margin: 0 18px;
+}
+
+div.member-img{
+    background-image: url(/application/class/getPicture?mid=haesui);
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}

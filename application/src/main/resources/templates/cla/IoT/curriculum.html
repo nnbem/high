@@ -1,0 +1,46 @@
+<link rel="stylesheet" th:href="@{/css/ClassStyle.css}" />
+
+<div class="class_content">
+    <section class="class_intro">
+        <h2>커리큘럼소개</h2>
+    </section>
+
+    <div class="info">
+      <table class="info_table">
+        <tr>
+          <td class="th"><p>임베디드 개발자</p></td>
+          <td class="td"><span>임베디드 시스템</span></td>
+          <td class="td"><span>C/C++</span></td>
+          <td class="td"><span>Qt</span></td>
+          <td class="td"><span>Linux</span></td>
+          <td class="td"><span>AUTOSAR</span></td>
+        </tr>
+        <tr>
+          <td class="th"><p>IoT 하드웨어 엔지니어</p></td>
+          <td class="td"><span>라즈베리파이</span></td>
+          <td class="td"><span>CAN통신</span></td>
+          <td class="td"><span>Digital IC Design</span></td>
+          <td class="td"><span>Analog IC Design</span></td>
+        </tr>
+        <tr>
+          <td class="th"><p>차량용 SW 엔지니어</p></td>
+          <td class="td"><span>AUTOSAR</span></td>
+          <td class="td"><span>C/C++</span></td>
+          <td class="td"><span>CAN통신</span></td>
+          <td class="td"><span>MSW Development</span></td>
+        </tr>
+        <tr>
+          <td class="th"><p>산업용 IoT 엔지니어</p></td>
+          <td class="td"><span>라즈베리파이</span></td>
+          <td class="td"><span>Linux</span></td>
+          <td class="td"><span>Digital IC Design</span></td>
+          <td class="td"><span>Analog IC Design</span></td>
+        </tr>           
+      </table>
+    </div>
+    <div class="btn">
+      <button onclick="location.href='info/modify';" class="info_modify">회원 정보 수정하기</button>
+    </div>
+</div>
+
+<th:block th:insert="~{module/common_js}"></th:block>

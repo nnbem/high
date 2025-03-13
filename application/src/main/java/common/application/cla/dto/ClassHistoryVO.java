@@ -16,5 +16,6 @@ public class ClassHistoryVO {
     private int class_history;  // 세부 강의 시청시간
     private int complete;       // 완료여부
     private int enrollCount;    // 수강신청카운트
+    private int state;          // 상태
 
 }

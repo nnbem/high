@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="Member-Mapper">
+
+	<select id="selectMemberList" resultType="member">
+		select *
+		from member
+		order by regDate desc
+	</select>
+	<select id="selectMemberByMid" parameterType="str" resultType="member">
+		select *
+		from member
+		where mid=#{mid}
+	</select>	
+	<insert id="insertMember" parameterType="member">
+		insert into
+		member(mid, pwd, name, picture, birth, phone, address, email, qrcode, enabled)
+		values (#{mid}, #{pwd}, #{name}, #{picture}, #{birth, jdbcType=DATE}, #{phone, jdbcType=VARCHAR}, #{address, jdbcType=VARCHAR},  #{email, jdbcType=VARCHAR}, #{qrcode, jdbcType=VARCHAR}, #{enabled})
+	</insert>
+	<update id="updateMember" parameterType="member">
+		update member
+		set pwd=#{pwd}, name=#{name}, picture=#{picture}, birth=#{birth, jdbcType=DATE}, phone=#{phone}, address=#{address}, email=#{email}
+		where mid=#{mid}
+	</update>
+	<delete id="deleteMember" parameterType="str">
+		delete
+		from member
+		where mid=#{mid}
+	</delete>
+
+	<select id="selectAuthoritiesByMid" resultType="str">
+		select a.authority
+		from member m, authority a
+		where m.mid = a.mid and m.mid=#{mid}
+	</select>
+	<insert id="insertAuthorities" >
+		insert into authority(mid,authority)
+		values (#{mid},#{authority})
+	</insert>
+	<delete id="deleteAllAuthorityById" >
+		delete
+		from authority
+		where mid = #{mid} and authority!='ROLE_ADMIN'
+	</delete>
+
+	<select id="selectCompanyList" resultType="company">
+		select *
+		from company
+		order by regDate desc
+	</select>
+	<select id="selectCompanyByCno" parameterType="str" resultType="company">
+		select *
+		from company
+		where cno=#{cno}
+	</select>	
+	<insert id="insertCompany" parameterType="company">
+		insert into
+		company(cno, com_name, regdate, phone, address, ceo, pwd, email, authority, enabled)
+		values (#{cno}, #{com_name}, #{regdate, jdbcType=DATE}, #{phone}, #{address}, #{ceo}, #{pwd}, #{email}, #{authority}, #{enabled})
+	</insert>
+	<update id="updateCompany" parameterType="company">
+		update company
+		set com_name=#{com_name}, regdate=#{regdate}, phone=#{phone}, address=#{address}, empl_num=#{empl_num}, type=#{type}, ceo=#{ceo}, infra=#{infra}, pwd=#{pwd}, email=#{email}, qrcode=#{qrcode}, authority=#{authority}, enabled=#{enabled}
+		where cno=#{cno}
+	</update>
+	<delete id="deleteCompany" parameterType="company">
+		delete
+		from company
+		where cno=#{cno}
+	</delete>
+
+	<select id="selectAuthoritiesByCno" resultType="str">
+		select authority
+		from company
+		where cno=#{cno}
+	</select>
+
+</mapper>
+
+
+
+
+
+

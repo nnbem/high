@@ -2,10 +2,10 @@
 <!-- 상단 탑바 -->
 <div class="topbar-login">
     <th:block th:if="${session.loginUser == null}">
-        <a></a><a href="member/loginForm">로그인</a>
+        <a></a><a href="loginForm">로그인</a>
     </th:block>
     <th:block th:if="${session.loginUser != null}">
-        <a href="member/logout">로그아웃</a> | <a href="#">마이페이지</a>
+        <a href="logout">로그아웃</a> | <a th:href="@{main/ifr}">마이페이지</a>
     </th:block>
     <th:block th:insert="~{module/cla/cheader}" />
     <th:block th:each="classMypageMenu : ${classMypageMenuList}">
@@ -15,7 +15,7 @@
         </a>
     </th:block>
 </div>
-<header class="topbar">
+<header class="topbar_m">
     <div class="topbar-logo">
         <a th:href="@{/class/main}">
             <img th:src="@{/images/Logo.png}" alt="로고" class="logo-img">
@@ -24,7 +24,7 @@
             <ul>
                 <li><a th:href="@{main/ifr}">웹개발</a></li>
                 <li><a th:href="@{main/ifr}">IoT</a></li>
-                <li><a th:href="@{main/ifr}">빅데이터터</a></li>
+                <li><a th:href="@{main/ifr}">빅데이터</a></li>
                 <li><a th:href="@{main/ifr}">인공지능</a></li>
                 <li><a th:href="@{main/ifr}">클라우드</a></li>
                 <li><a th:href="@{main/ifr}">나의강의실</a></li>

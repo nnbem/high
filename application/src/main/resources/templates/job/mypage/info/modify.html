@@ -1,37 +1,39 @@
-
 <link rel="stylesheet" th:href="@{/css/jinfo.css}" />
 <main class="content">
-    <h1>회원 정보</h1>
+    <h1>회원 정보 수정</h1>
     <div class="info">
       <div class="member-profile">
-        <div class="img">
+        <div class="mimg">
           <img th:src="@{/images/hae/none.png}" alt="User Avatar" class="member-img">
+          <div class="modify-img" onclick="ImgModify_go();">
+            <img th:src="@{/images/hae/modify.png}">
+          </div>
         </div>
         <div class="mstring">
           <span class="mname">박해수</span>
           <span class="mbirth">1997년생(28세)</span>
         </div>
       </div>
-      <table class="info-table">
+      <table class="info-modify-table">
         <tr>
           <td class="th"><p>아이디</p></td>
-          <td class="td"><span>haesui</span></td>
+          <td class="td"><input type="text" class="info-modify-input" value="haesui" ></td>
         </tr>
         <tr>
           <td class="th"><p>생년월일</p></td>
-          <td class="td"><span>****년**월**일</span></td>
+          <td class="td"><input type="date" class="info-modify-input" th:value="*{#dates.format(regDate,'yyyy-MM-dd') }"></td>
         </tr>
         <tr>
           <td class="th"><p>이메일</p></td>
-          <td class="td"><span>test22@naver.com</span></td>
+          <td class="td"><input type="text" class="info-modify-input"></td>
         </tr>
         <tr>
           <td class="th"><p>주소</p></td>
-          <td class="td"><span>대전시 중구</span></td>
+          <td class="td"><input type="text" class="info-modify-input"></td>
         </tr>
         <tr>
           <td class="th"><p>비밀번호</p></td>
-          <td class="td"><span>hae*****</span></td>
+          <td class="td"><input type="password" class="info-modify-input"></td>
         </tr>
       </table>
     </div>

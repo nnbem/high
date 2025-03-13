@@ -2,20 +2,16 @@ package common.application.cla.controller;
 
 import java.util.List;
 
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import common.application.cla.dto.ClassHistoryVO;
+import common.application.cla.dto.MemberVO;
 import common.application.cla.service.ClassHistoryService;
-import common.application.request.PageMaker;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -23,35 +19,46 @@ import jakarta.servlet.http.HttpSession;
 public record ClassHistoryController(ClassHistoryService classHistoryService) {
 
     @GetMapping("/myclassroom/list")
-    public void list(HttpSession session, Model model) throws Exception {
-        String mid = (String) session.getAttribute("loginUserId");
+    public String list(HttpSession session, Model model) throws Exception {
+        // 세션에서 MemberVO 객체를 가져옴
+        MemberVO member = (MemberVO) session.getAttribute("loginUser");
+        if (member == null) {
+            throw new RuntimeException("로그인이 필요합니다.");
+        }
+        String mid = member.getMid();
 
-        if (mid == null) {
+        List<ClassHistoryVO> historyList = classHistoryService.getEnrolledCoursesByMid(mid);
+        model.addAttribute("historyList", historyList);
+
+        // 실제 뷰 이름(예: myclassroom/list.jsp 혹은 타임리프 템플릿 이름)에 맞게 수정
+        return "myclassroom/list";
+    }
+
+    @PostMapping("/myclassroom/update")
+    public String update(HttpSession session, @ModelAttribute ClassHistoryVO classHistory) throws Exception {
+        // 로그인 상태 확인 (필요 시 업데이트 대상에 대한 본인 소유 확인 등 추가 검증 가능)
+        MemberVO member = (MemberVO) session.getAttribute("loginUser");
+        if (member == null) {
             throw new RuntimeException("로그인이 필요합니다.");
         }
 
-        List<ClassHistoryVO> historyList = classHistoryService.getEnrolledCoursesByMid(mid);
-
-        model.addAttribute("historyList", historyList);
-    }
-
-    // 수강신청 폼 페이지
-    @GetMapping("/enrollForm")
-    public void enrollForm() {
-    }
-
-    // 수강 진행도 업데이트 (예: 시청시간 업데이트)
-    @PostMapping("/myclassroom/update")
-    public String update(@ModelAttribute ClassHistoryVO classHistory) throws Exception {
+        // 예: 진행도나 시청시간 업데이트
         classHistoryService.updateHistory(classHistory);
-        return "redirect:/classHistory/list";
+
+        return "redirect:/myclassroom/list";
     }
 
-    // 수강신청 취소 처리 (삭제)
     @GetMapping("/myclassroom/remove")
-    public String remove(int clno) throws Exception {
+    public String remove(HttpSession session, int clno) throws Exception {
+        // 로그인 상태 확인 (필요 시 해당 수강신청이 로그인 사용자 소유인지 확인)
+        MemberVO member = (MemberVO) session.getAttribute("loginUser");
+        if (member == null) {
+            throw new RuntimeException("로그인이 필요합니다.");
+        }
+
         classHistoryService.deleteEnroll(clno);
-        return "redirect:/classHistory/list";
+
+        return "redirect:/myclassroom/list";
     }
 
     // 인기 강의 조회 (메인 화면 등에 표시)
@@ -61,36 +68,5 @@ public record ClassHistoryController(ClassHistoryService classHistoryService) {
         model.addAttribute("popularLectures", popularLectures);
     }
 
-    @PostMapping("/myclassroom/enroll/regist")
-    public ResponseEntity<String> enrollCourse(@RequestParam String clno, HttpSession session) {
-        String mid = (String) session.getAttribute("loginUserId");
-
-        if (mid == null) {
-            mid = "test77";
-            session.setAttribute("loginUserId", mid);
-        }
-
-        // 🔥 로그인되지 않은 사용자는 요청을 거부
-        // if (mid == null) {
-        // return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-        // .body("로그인이 필요합니다!");
-        // }
-
-        try {
-            ClassHistoryVO classHistory = new ClassHistoryVO();
-            classHistory.setMid(mid);
-            classHistory.setClno(Integer.parseInt(clno));
-
-            classHistoryService.insertEnroll(classHistory);
-
-            return ResponseEntity.ok("✅ 강의 " + clno + " 수강 신청이 완료되었습니다!");
-        } catch (DataIntegrityViolationException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body("이미 수강신청된된 강의입니다!");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(": " + e.getMessage());
-        }
-    }
-
+    
 }

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Learninghigh</title>
+<!-- Google Font: Source Sans Pro -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+
+<link rel="stylesheet" th:href="@{/bootstrap/plugins/fontawesome-free/css/all.min.css}">
+<!-- Theme style -->
+<link rel="stylesheet" th:href="@{/bootstrap/dist/css/adminlte.min.css}">
+<style>
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	font-family: Arial, sans-serif;
+	background-color: #FFFFFF;
+	color: #333;
+}
+
+div.wraper {
+	width: 600px;
+	height: 600px;
+	margin: 0 auto;
+	margin-top: 5%;
+}
+div.container{
+	width: 600px;
+	height: auto;
+	padding: 50px;
+	margin: 50px auto;
+	border: 1px solid #ddd;
+    border-radius: 10px;
+}
+div.login-logo{
+	padding-top: 50px;
+}
+form.login-form{
+	width:500px;
+	margin: 0 auto;
+}
+div.input-group{
+	padding-top: 10px;
+	display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+}
+div.input-group label{
+	padding: 8px;
+	font-size: 15px;
+	float: left;
+}
+input.form-control{
+	width: 100%;
+	padding-left: 10px;
+	margin-left: 10px;
+	background-color: #E6E6E6;	
+}
+
+
+.input-group>.custom-select:not(:first-child), .input-group>.form-control:not(:first-child) {
+	border-radius:5px;
+}
+
+div.submit{
+	padding: 10px;
+	margin: 20px 0 16px 10px;
+	height: 60px;
+	background-color: #0F410E;
+	border-radius: 5px;
+}
+div.submit button{
+	color: white;
+	font-size: 20px;
+	letter-spacing: 8px;
+}
+div img.logoImg {
+	width: 140px;
+	height: 60px;
+}
+
+div.input-group input{
+    background-color: #FFFFFF;
+}
+
+.login-form p{
+    margin: 10px 0 0 10px;
+    font-family: NanumSquare_ac ExtraBold;
+    font-size: 20px;
+    color: #5D5D5D;
+}
+
+div.Label{
+	padding: 10px;
+	margin: 20px 0 16px 10px;
+	height: 40px;
+	background-color: #0F410E;
+	border-radius: 5px;
+	cursor: pointer;
+}
+div.Label label{
+	padding: 0;
+	color: white;
+	font-size: 15px;
+	cursor: pointer;
+}
+</style>
+</head>
+<body>
+	<div class="wraper">
+		<div class="container">
+			<!-- /.login-logo -->
+			<div class="logo" style="display: flex; align-items: center; margin: 20px;">
+				<img th:src="@{/images/logo.png}" alt="logoImg" class="logoImg">
+				<h3 class="login-box-msg" style="font-family: NanumSquare_ac; padding: 0; margin-left: 40px;"><strong>업체 가입</strong></h5>
+			</div>
+			<form id="registForm" action="join/post" method="post" class="login-form">
+                <p>업체 사업자 번호</p>
+				<div class="input-group mb-3">
+					<input type="text" id="cno" class="form-control radius" name="cno" placeholder="사업자 번호" required oninput="handleCnoInput(this)" maxlength="12" value="">
+					<div class="Label">
+						<label class="label_file" onclick="verificateCno();">사업자 번호 확인</label>
+					</div>
+				</div>
+                <p>비밀번호</p>
+                <div class="input-group mb-3">
+					<input type="password" class="form-control radius" name="pwd" placeholder="비밀번호" value="">
+				</div>
+                <p>업체명</p>
+                <div class="input-group mb-3">
+					<input type="text" class="form-control radius" name="com_name" placeholder="업체명" value="">
+				</div>
+                <p>대표명</p>
+                <div class="input-group mb-3">
+					<input type="text" class="form-control radius" name="ceo" placeholder="대표명" value="">
+				</div>
+				<p>개업일</p>
+				<div class="input-group mb-3">
+					<input type="date" class="form-control radius" name="regdate" placeholder="개업일" value="">
+				</div>
+                <p>전화번호</p>
+                <div class="input-group mb-3">
+                    <input type="text" id="phone" class="form-control radius" name="phone" placeholder="전화번호 (010-XXXX-XXXX)" required oninput="handlePhoneInput(this)" maxlength="13">
+                </div>
+                <p>이메일</p>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control radius" name="email" placeholder="이메일" value="">
+                </div>
+                <p>주소</p>
+                <div class="input-group mb-3">
+					<input type="text" class="form-control radius" name="address" placeholder="주소" value="">
+                </div>
+				<div class="submit">
+					<button type="submit" class="btn btn-block" style="font-family: NanumSquare_ac;" onclick="regist_submit();"><strong>가입하기</strong></button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<th:block th:insert="~{module/common_js}"></th:block>
+
+	<script>
+		function handlePhoneInput(input) {
+			input.value = input.value
+				.replace(/[^0-9]/g, '') // 숫자만 입력
+				.replace(/^(\d{3})(\d{4})(\d{4})$/, '$1-$2-$3'); // 하이픈 자동 추가
+		}
+
+		function handleCnoInput(input) {
+			input.value = input.value
+				.replace(/[^0-9]/g, '')
+				.replace(/^(\d{3})(\d{2})(\d{5})$/, '$1-$2-$3');
+		}
+
+		function regist_submit(event) {
+			if (!event) event = window.event; // 이벤트 객체 없을 때 대비
+			if (event) event.preventDefault(); // 기본 제출 방지
+		
+			// 폼 요소 가져오기
+			const form = document.getElementById('registForm');
+			const cnoInput = form.querySelector('input[name="cno"]');
+			const pwdInput = form.querySelector('input[name="pwd"]');
+			const com_nameInput = form.querySelector('input[name="com_name"]');
+			const ceoInput = form.querySelector('input[name="ceo"]');
+			const regdateInput = form.querySelector('input[name="regdate"]');
+			const phoneInput = form.querySelector('input[name="phone"]');
+			const emailInput = form.querySelector('input[name="email"]');
+			const addressInput = form.querySelector('input[name="address"]');
+
+			// 필수 입력값 검사
+			if (!cnoInput.value.trim()) {
+				alert('업체 번호를 입력해주세요.');
+				midInput.focus();
+				return false;
+			}
+			if (!pwdInput.value.trim()) {
+				alert('비밀번호를 입력해주세요.');
+				pwdInput.focus();
+				return false;
+			}
+			if (!com_nameInput.value.trim()) {
+				alert('업체명을 입력해주세요.');
+				nameInput.focus();
+				return false;
+			}
+			if (!ceoInput.value) {
+				alert('대표명을 입력해주세요.');
+				birthInput.focus();
+				return false;
+			}
+			if (!regdateInput.value) {
+				alert('개업일을 입력해주세요.');
+				birthInput.focus();
+				return false;
+			}
+			if (!phoneInput.value.trim()) {
+				alert('전화번호를 정확히 입력해주세요.');
+				phoneInput.focus();
+				return false;
+			}
+			if (!emailInput.value.trim()) {
+				alert('이메일을 입력해주세요.');
+				emailInput.focus();
+				return false;
+			}
+			if(!validateAddress(addressInput.value)) {
+				alert("주소 형식이 올바르지 않습니다. 예: 대전광역시 중구 선화동");
+				document.querySelector('input[name="address"]').focus();
+				return;
+			}
+		
+		// 모든 검사 통과 시 폼 제출 (POST 요청)
+			form.method = "POST"; // 명시적으로 POST 설정
+			form.action = "join/post"; // 액션 URL 설정
+			form.enctype = "multipart/form-data"; // 파일 업로드를 위한 인코딩 설정
+			form.submit();
+		}
+
+		function validateAddress(address) {
+			const addressPattern = /^[가-힣]+[시도]\s[가-힣]+[시군구]\s[가-힣]+[동읍면로리]$/;
+			return addressPattern.test(address);
+		}
+	</script>
+	<script>
+		var checkCNO = "";
+		function verificateCno(){
+			//alert("click idCheck");
+			let inputCNO = $('input[name="cno"]');
+			if(!inputCNO.val()){
+				alert("사업자 등록 번호를 입력하세요");
+				inputCNO.focus();
+				return;
+			}
+			
+			$.ajax({
+				url: "cnoCheck?cno="+inputCNO.val(),
+				method:"get",
+				success:function(data){				
+					if(data=="duplicated"){
+						alert("이미 사용중인 아이디입니다.");
+						inputCNO.focus();
+						return;
+					}else{
+						alert("사용 가능한 아이디입니다.")
+						checkCNO = inputCNO.val();
+						$('input[name="pwd"]').focus();
+						return;
+					}
+				},
+				error:function(error){
+					AjaxErrorSecurityRedirectHandler(error.status);
+				}
+			});
+		}
+	</script>
+
+
+</body>
+</html>
+
+

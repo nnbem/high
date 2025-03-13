@@ -1,6 +1,6 @@
 package common.application.job.dto;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +10,7 @@ import lombok.Setter;
 public class CompanyVO {
     private String cno;
     private String com_name;
-    private Date regdate;
+    private LocalDate regdate;
     private String phone;
     private String address;
     private int empl_num;
@@ -21,5 +21,6 @@ public class CompanyVO {
     private String pwd;
     private String email;
     private String qrcode;
-
+    private String authority;
+    private int enabled;
 }

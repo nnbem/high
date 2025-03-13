@@ -3,6 +3,8 @@ package common.application.cla.controller;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,13 +14,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import common.application.cla.dto.ClassHistoryVO;
 import common.application.cla.dto.ClassListVO;
+import common.application.cla.dto.MemberVO;
+import common.application.cla.service.ClassHistoryService;
 import common.application.cla.service.ClassListService;
 import common.application.request.PageMaker;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("class")
-public record WebClassController(ClassListService classListService) {
+public record WebClassController(ClassListService classListService, ClassHistoryService classHistoryService) {
 
     @GetMapping("/web")
     public String web() {
@@ -61,5 +67,36 @@ public record WebClassController(ClassListService classListService) {
         System.out.println("수강 신청 시도: clno = " + clno);
         return ResponseEntity.ok("강의 " + clno + " 수강 신청 완료");
     }
+
+    @PostMapping("/myclassroom/enroll/regist")
+    public ResponseEntity<String> enrollCourse(@RequestParam String clno, HttpSession session) {
+    // MemberVO 객체 통째로 가져오기
+    MemberVO member = (MemberVO) session.getAttribute("loginUser");
+
+    // 로그인되지 않은 사용자는 요청 거부
+    if (member == null) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body("로그인이 필요합니다!");
+    }
+
+    // 로그인 사용자 아이디 추출
+    String mid = member.getMid();
+
+    try {
+        ClassHistoryVO classHistory = new ClassHistoryVO();
+        classHistory.setMid(mid);
+        classHistory.setClno(Integer.parseInt(clno));
+
+        classHistoryService.insertEnroll(classHistory);
+
+        return ResponseEntity.ok("강의 " + clno + " 수강 신청이 완료되었습니다!");
+    } catch (DataIntegrityViolationException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body("이미 수강신청된 강의입니다!");
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("오류 발생: " + e.getMessage());
+    }
+}
 
 }

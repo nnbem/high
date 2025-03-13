@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Learninghigh</title>
+<!-- Google Font: Source Sans Pro -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+
+<link rel="stylesheet" th:href="@{/bootstrap/plugins/fontawesome-free/css/all.min.css}">
+<!-- Theme style -->
+<link rel="stylesheet" th:href="@{/bootstrap/dist/css/adminlte.min.css}">
+<style>
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	font-family: Arial, sans-serif;
+	background-color: #FFFFFF;
+	color: #333;
+}
+
+div.wraper {
+	width: 600px;
+	height: 600px;
+	margin: 0 auto;
+	margin-top: 10%;
+}
+div.container{
+	width: 600px;
+	height: 450px;
+	padding: 50px;
+	margin: 50px auto;
+	border: 1px solid #ddd;
+    border-radius: 10px;
+}
+div.login-logo{
+	padding-top: 50px;
+}
+form.login-form{
+	width:500px;
+	margin: 0 auto;
+}
+div.input-group{
+	padding-top: 10px;
+}
+div.input-group label{
+	padding: 8px;
+	font-size: 15px;
+	float: left;
+}
+input.form-control{
+	width: 100%;
+	padding-left: 10px;
+	margin-left: 10px;
+	background-color: #E6E6E6;	
+}
+
+
+.input-group>.custom-select:not(:first-child), .input-group>.form-control:not(:first-child) {
+	border-radius:5px;
+}
+
+div.submit{
+	padding: 10px;
+	margin: 20px 0 16px 10px;
+	height: 60px;
+	background-color: #0F410E;
+	border-radius: 5px;
+}
+div.submit button{
+	color: white;
+	font-size: 20px;
+	letter-spacing: 8px;
+}
+div img.logoImg {
+	width: 140px;
+	height: 60px;
+}
+
+</style>
+</head>
+<body>
+	<div class="wraper">
+		<div class="container">
+			<!-- /.login-logo -->
+			<div class="logo" style="display: flex; align-items: center; margin: 20px;">
+				<img th:src="@{/images/logo.png}" alt="logoImg" class="logoImg">
+				<h3 class="login-box-msg" style="font-family: NanumSquare_ac; padding: 0; margin-left: 15px;"><strong>비밀번호 찾기</strong></h5>
+			</div>
+			<form action="login/post" method="post" class="login-form">
+				<div class="input-group mb-3">
+					<input type="text" class="form-control radius" name="eid" placeholder="업체번호" value="">
+				</div>
+				<div class="input-group mb-3">
+					<input type="password" class="form-control radius" name="pwd" placeholder="이메일" value="">
+				</div>
+				<div class="submit">
+					<button type="submit" class="btn btn-block" style="font-family: NanumSquare_ac;"><strong>인증하기</strong></button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<th:block th:insert="~{module/common_js}"></th:block>
+</body>
+</html>
+
+

@@ -1,0 +1,10 @@
+<th:block th:if="${session.loginUser == null}" >
+  <script>
+    location.href="[[@{/}]]member/loginForm";
+  </script>  
+</th:block>
+<th:block th:if="${session.loginUser != null}" >
+  <script>
+    location.href="[[@{/}]]class/main";
+  </script>
+</th:block>

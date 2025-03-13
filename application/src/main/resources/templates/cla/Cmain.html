@@ -2,10 +2,10 @@
 <!-- 상단 탑바 -->
 <div class="topbar-login">
   <th:block th:if="${session.loginUser == null}" >
-    <a></a><a href="member/loginForm">로그인</a>
+    <a></a><a href="/application/class/loginForm">로그인</a>
   </th:block>
   <th:block th:if="${session.loginUser != null}" >
-    <a href="member/logout">로그아웃</a> | <a href="#">마이페이지</a>
+    <a href="/application/class/logout">로그아웃</a> |
   </th:block>
   <th:block th:insert="~{module/cla/cheader}" />
   <th:block th:each="classMypageMenu : ${classMypageMenuList}">

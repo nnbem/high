@@ -12,6 +12,8 @@
 		<typeAlias type="common.application.cla.dto.ClassMenuVO" alias="classMenu"/>
 		<typeAlias type="common.application.cla.dto.ClassMypageMenuVO" alias="classMypageMenu"/>
 		<typeAlias type="common.application.cla.dto.ClassHistoryVO" alias="classHistory"/>
+		<typeAlias type="common.application.cla.dto.MemberVO" alias="member"/>
+		<typeAlias type="common.application.job.dto.CompanyVO" alias="company"/>
 		<typeAlias type="common.application.cla.dto.FildSkillVO" alias="fildSkill" />
 		<typeAlias type="common.application.cla.dto.ClassListVO" alias="classList"/>
 

@@ -1,0 +1,16 @@
+<script type="text/javascript">
+	document.addEventListener("DOMContentLoaded", function () {
+		alert("[[${message}]]");
+
+		if (window.opener) {
+			window.opener.parent.location.reload();
+			window.close();
+		} else {
+			if (window.parent) {
+				window.parent.location.href= "/application/class/loginForm";
+			} else {
+				window.location.href="/application/class/loginForm";
+			}
+		}
+	});
+</script>

@@ -1,0 +1,69 @@
+<link rel="stylesheet" th:href="@{/css/jinfo.css}" />
+<link rel="stylesheet" th:href="@{/css/ClassStyle.css}" />
+
+<div class="class_content">
+  <section class="class_intro">
+    <h2>회원정보</h2>
+  </section>
+
+  <div class="info">
+    <div class="member-profile">
+      <div class="mimg">
+        <th:block th:if="${member.picture == null}">
+          <div class="member-img" id="main-animalImg" style="background-image:url('/images/hae/none.png')"></div>
+        </th:block>
+        <th:block th:if="${member.picture != null}">
+          <div class="member-img" id="memberImg"
+            th:style="'background-image: url(' + @{/class/getPicture(mid=${member.mid})} + ');'">
+          </div>
+        </th:block>
+      </div>
+      <div class="mstring">
+        <span class="mname" th:text="${member.name}"></span>
+        <span class="mbirth"
+          th:text="${member.birth != null ? #temporals.format(member.birth, 'yyyy-MM-dd') : '정보 없음'}">1997년생(28세)</span>
+      </div>
+    </div>
+    <table class="info-table">
+      <tr>
+        <td class="th">
+          <p>아이디</p>
+        </td>
+        <td class="td" th:text="${member.mid}"><span></span></td>
+      </tr>
+      <tr>
+        <td class="th">
+          <p>생년월일</p>
+        </td>
+        <td class="td" th:text="${member.birth != null ? #temporals.format(member.birth, 'yyyy-MM-dd') : '정보 없음'}">
+          <span></span></td>
+      </tr>
+      <tr>
+        <td class="th">
+          <p>이메일</p>
+        </td>
+        <td class="td" th:text="${member.email}"><span></span></td>
+      </tr>
+      <tr>
+        <td class="th">
+          <p>주소</p>
+        </td>
+        <td class="td" th:text="${member.address}"><span>대전시 중구</span></td>
+      </tr>
+      <tr>
+        <td class="th">
+          <p>비밀번호</p>
+        </td>
+        <td class="td" th:text="${member.pwd}"><span>hae*****</span></td>
+      </tr>
+    </table>
+  </div>
+  <div class="btn">
+    <button onclick="location.href='mypage/modify';" class="info-modify">회원 정보 수정하기</button>
+  </div>
+
+</div>
+<th:block th:insert="~{module/common_js}"></th:block>
+<script>
+
+</script>

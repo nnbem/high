@@ -1,0 +1,126 @@
+<link rel="stylesheet" th:href="@{/css/jinfo.css}" />
+<main class="content">
+    <h1>회원 정보 수정</h1>
+    <div class="info">
+      <form id="modifyForm" action="modify/post" method="post" enctype="multipart/form-data">
+        <div class="member-profile">
+            <div class="container_group">
+              <div class="mimg" id="pictureView">
+              </div>
+              <div class="picture_file" style="width: 100%;">
+                <div class="file_container" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; margin-top: 10px;">
+                  <input id="inputFileName" class="info-modify-input" type="text" name="picture_file" style="display: none;" disabled />
+                  <input type="file" id="inputFile" name="picture" style="display: none;" onchange="picture_go();" />
+                  <div class="Label">
+                    <label for="inputFile" class=" label_file">파일선택</label>
+                  </div>
+                </div>
+                <!-- file_container -->
+              </div>
+              <!-- picture_file -->
+            </div>
+          <div class="mstring">
+            <span class="mname">박해수</span>
+            <span class="mbirth">1997년생(28세)</span>
+          </div>
+        </div>
+        <table class="info-modify-table">
+          <tr>
+            <td class="th"><p>아이디</p></td>
+            <td class="td"><input type="text" class="info-modify-input" th:value="${member.mid}" disabled></td>
+            <input type="hidden" name="mid" th:value="${member.mid}">
+          </tr>
+          <tr>
+            <td class="th"><p>생년월일</p></td>
+            <td class="td"><input type="date" name="birth" class="info-modify-input" th:value="${member.birth != null ? #temporals.format(member.birth, 'yyyy-MM-dd') : ''}"></td>
+          </tr>
+          <tr>
+            <td class="th"><p>이메일</p></td>
+            <td class="td"><input type="text" name="email" class="info-modify-input" th:value="${member.email}"></td>
+          </tr>
+          <tr>
+            <td class="th"><p>주소</p></td>
+            <td class="td"><input type="text" name="address" class="info-modify-input" th:value="${member.address}"></td>
+          </tr>
+          <tr>
+            <td class="th"><p>전화번호</p></td>
+            <td class="td"><input type="text" name="phone" class="info-modify-input" th:value="${member.phone}" required oninput="handlePhoneInput(this)" maxlength="13"></td>
+          </tr>
+          <tr>
+            <td class="th"><p>비밀번호</p></td>
+            <td class="td"><input type="password" name="pwd" class="info-modify-input" th:value="${member.pwd}"></td>
+          </tr>
+        </table>
+        <input type="text" name="name" th:value="${member.name}" style="display: none;">
+      </form>
+    </div>
+    <div class="btn">
+      <button onclick="modify_submit(event);" class="info-modify">회원 정보 수정하기</button>
+    </div>
+</main>
+<th:block th:insert="~{module/common_js}"></th:block>
+<script th:src="@{/js/regist.js}"></script>
+
+<script>
+	//전화번호 유효성 검사 함수
+  function handlePhoneInput(input) {
+			input.value = input.value
+				.replace(/[^0-9]/g, '') // 숫자만 입력
+				.replace(/^(\d{3})(\d{4})(\d{4})$/, '$1-$2-$3'); // 하이픈 자동 추가
+		}
+
+	
+	function modify_submit(event) {
+    
+		if (!event) event = window.event; // 이벤트 객체 없을 때 대비
+		if (event) event.preventDefault(); // 기본 제출 방지
+	
+		// 폼 요소 가져오기
+		const form = document.getElementById('modifyForm');
+		const midInput = form.querySelector('input[name="mid"]');
+		const pwdInput = form.querySelector('input[name="pwd"]');
+		const phoneInput = form.querySelector('input[name="phone"]');
+		const birthInput = form.querySelector('input[name="birth"]');
+		const emailInput = form.querySelector('input[name="email"]');
+		const pictureInput = form.querySelector('input[type="file"][name="picture"]');
+		const addressInput = form.querySelector('input[name="address"]');
+    const nameInput = form.querySelector('input[name="name"]');
+    
+		// 필수 입력값 검사
+		if (!pwdInput.value.trim()) {
+      alert('비밀번호를 입력해주세요.');
+			pwdInput.focus();
+			return false;
+		}
+    alert("submit");
+		if (!birthInput.value) {
+			alert('생년월일을 선택해주세요.');
+			birthInput.focus();
+			return false;
+		}
+		if (!emailInput.value.trim()) {
+			alert('이메일을 입력해주세요.');
+			emailInput.focus();
+			return false;
+		}
+		if (!phoneInput.value.trim()) {
+			alert('전화번호를 정확히 입력해주세요.');
+			phoneInput.focus();
+			return false;
+		}
+		if (!addressInput.value.trim()) {
+			alert('주소를 입력해주세요.');
+			departmentInput.focus();
+			return false;
+		}
+		if (!pictureInput.files || pictureInput.files.length === 0) {
+			alert('사진을 등록해주세요.');
+			return false;
+		}
+	 // 모든 검사 통과 시 폼 제출 (POST 요청)
+		form.method = "POST"; // 명시적으로 POST 설정
+		form.action = "modify/post"; // 액션 URL 설정
+		form.enctype = "multipart/form-data"; // 파일 업로드를 위한 인코딩 설정
+		form.submit();
+	}
+</script>
