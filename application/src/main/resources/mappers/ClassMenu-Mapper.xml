@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ClassMenu-Mapper">
+    <select id="selectMainClassMenu" resultType="classMenu">
+        select *
+        from cmenu
+        where cCode like '%'||'0000'
+        order by cCode asc
+    </select>
+    <select id="selectSubClassMenu" resultType="classMenu">
+        select *
+        from cmenu
+        where upCode = #{cCode} and isNav=1
+    </select>
+    <select id="selectClassMenuByCcode" resultType="classMenu">
+        select *
+        from cmenu
+        where cCode = #{cCode}
+    </select>
+    <select id="selectClassMenuByCname" resultType="classMenu">
+        select *
+        from cmenu
+        where cName = #{cName}
+    </select>
+</mapper>

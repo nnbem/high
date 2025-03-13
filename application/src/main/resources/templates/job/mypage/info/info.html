@@ -1,0 +1,51 @@
+<th:block th:insert="~{module/job/jheader}" />
+<th:block th:insert="~{module/job/jtopbar}" />
+
+  <!-- 메인 래퍼: 왼쪽 사이드바 + 본문 -->
+  <div class="main-wrap">
+    <!-- 왼쪽 사이드바 -->
+    <aside class="sidebar">
+      <ul class="side-menu">
+        <li><a href="#">웹개발</a></li>
+        <li><a href="#">IoT</a></li>
+        <li><a href="#">빅데이터</a></li>
+        <li><a href="#">인공지능</a></li>
+        <li><a href="#">클라우드</a></li>
+      </ul>
+    </aside>
+    <hr />
+    <!-- 본문 컨텐츠 영역 -->
+    <main class="content">
+        <h1>회원 정보 수정</h1>
+        <div class="info">
+            <div>
+                <p>아이디</p>
+                <span>haesui</span>
+                <button></button>
+            </div>
+            <div>
+                <p>이름</p>
+                <span>박해수</span>
+            </div>
+            <div>
+                <p>생년월일</p>
+                <span>****년**월**일</span>
+            </div>
+            <div>
+                <p>이메일</p>
+                <span>test22@naver.com</span>
+            </div>
+            <div>
+                <p>주소</p>
+                <span>대전시 중구</span>
+            </div>
+            <div>
+                <p>비밀번호</p>
+                <span>hae*****</span>
+            </div>
+        </div>
+        <button></button>
+    </main>
+  </div>
+
+<th:block th:insert="~{module/footer}" />

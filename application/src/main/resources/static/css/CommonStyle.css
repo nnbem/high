@@ -1,0 +1,123 @@
+/* 서치바 */
+.filter-bar {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 6px;
+}
+
+.sort-select, .category-select {
+    padding: 10.5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.search_box {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.search_box input {
+    border: none;
+    padding: 8px;
+    outline: none;
+    font-size: 14px;
+    width: 200px;
+}
+
+.search_box button {
+    border: none;
+    background-color: #00A86B;
+    color: white;
+    padding: 0px 12px 2px 12px;
+    cursor: pointer;
+    font-size: 30px;
+}
+
+.search_box button:hover {
+    background-color: #008f5e;
+}
+
+.magnifier{
+    width: 10px;
+}
+
+/* 새로고침 버튼 */
+.refresh-btn {
+    border: none;
+    background: none;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+/* 테이블 */
+.table_list {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+.thead {
+    border: 1px solid #ddd;
+    border-left: none;
+    border-right: none;
+    background-color: #f6f6f6;
+    color: #353535;
+    font-size: 18px;
+}
+.table_list th {
+    border-bottom: 1px solid #ddd;
+    padding: 20px;
+    text-align: center;
+    
+}
+.table_list td{
+    border-bottom: 1px solid #ddd;
+    padding: 20px;
+    text-align: center;
+}
+
+/* 페이지네이션 */
+.pagination {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.pagination a {
+    color: black;
+    padding: 8px 12px;
+    text-decoration: none;
+    border-radius: 5px;
+    margin: 0 5px;
+}
+
+.pagination a.active {
+    background-color: #00A86B;
+    color: white;
+    border: 1px solid #00A86B;
+}
+
+.pagination a:hover {
+    background-color: #ddd;
+}
+
+div.btn{
+    display: flex;
+    justify-content: center;
+    margin-top: 3%;
+}
+button.testing{
+    width: 50px;
+    height: 30px;
+    background-color: #00A86B;
+    border: none;
+    border-radius: 3px;
+    color: #fff;
+    font-family: NanumSquare_ac ExtraBold;
+    font-size: medium;
+    cursor: pointer;
+}

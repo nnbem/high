@@ -1,0 +1,134 @@
+<th:block th:insert="~{module/job/jheader}" />
+
+<div class="topend">
+  <div class="topbar-login">
+    <p>로그인</p> : <a href="#">이용자</a> <a href="#">업체</a> |
+    <th:block th:each="mypageMenu : ${mypageMenuList}">
+      <a class="mypageifr"
+        th:href="|javascript:mypageSubMenu_go('${mypageMenu.mcode}');goPage('@{${mypageMenu.murl}}','${mypageMenu.mcode}');|"
+        th:text="${mypageMenu.mname}">
+      </a>
+    </th:block>
+  </div>
+  <header class="topbar">
+    <div class="topbar-logo">
+      <a th:href="@{/job/main}">
+        <img th:src="@{/images/F_Logo.png}" alt="로고" class="logo-img">
+      </a>
+      <nav class="topbar-menu">
+        <ul>
+          <th:block th:each="jobMenu : ${jobMenuList}">
+            <li class="ifr_li">
+              <a th:href="|javascript:subMenu_go('${jobMenu.jcode }');goPage('@{${jobMenu.jurl}}','${jobMenu.jcode }');|"
+                class="nav-link" th:text="${jobMenu.jname }">
+              </a>
+            </li>
+          </th:block>
+        </ul>
+      </nav>
+    </div>
+  </header>
+</div>
+
+<!-- 메인 래퍼: 왼쪽 사이드바 + 본문 -->
+<div class="main-wrap">
+  <!-- 왼쪽 사이드바 -->
+  <aside class="jsidebar">
+    <ul class="subMenuList">
+
+    </ul>
+  </aside>
+  <hr />
+  <!-- 본문 컨텐츠 영역 -->
+  <main class="content">
+    <iframe name="ifr" src="" frameborder="0" style="width:100%;height:85vh;"></iframe>
+  </main>
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+<script type="text/x-handlebars-template" id="subMenu-list-template">
+  {{#each .}}		
+  <li class="subIfr_li">
+    <a href="javascript:goPage('{{jurl}}','{{jcode}}');">
+      {{jname}}
+    </a>
+  </li>
+  {{/each}}
+  </script>
+
+<script type="text/x-handlebars-template" id="mypage-subMenu-list-template">
+  {{#each .}}		
+  <li class="subIfr_li">
+    <a href="javascript:goPage('{{murl}}','{{mcode}}');">
+      {{mname}}
+    </a>
+  </li>
+  {{/each}}
+</script>
+
+
+<script>
+  var sub_func = Handlebars.compile($("#subMenu-list-template").html());
+  var sub_func_mypage = Handlebars.compile($("#mypage-subMenu-list-template").html());
+
+  // 메인메뉴 서브메뉴 호출
+  function subMenu_go(jCode) {
+    if (jCode == "J000000") {
+      $('.subMenuList').html("");
+      return;
+    }
+
+    $.ajax({
+      url: "[[@{/job/menu/subMenu}]]?jCode=" + jCode,
+      method: "get",
+      success: function (data) {
+        $('.subMenuList').html(sub_func(data));
+      }
+    });
+  }
+
+
+  function mypageSubMenu_go(mCode) {
+    if (mCode == "M000000") {
+      $('.subMenuList').html("");
+      return;
+    }
+
+    $.ajax({
+      url: "[[@{/mypagemenu/job/menu/mypageSubMenu}]]?mCode=" + mCode,
+      method: "get",
+      success: function (data) {
+        $('.subMenuList').html(sub_func_mypage(data));
+      }
+    });
+  }
+
+  function goPage(url, jCode) {
+    $('iframe[name="ifr"]').attr("src", url);
+    var renewURL = "[[@{/job/main}]]";
+
+    if (jCode !== 'J000000' && jCode != 'M000000') {
+      renewURL += "?jCode=" + jCode;
+    }
+    history.pushState(jCode, null, renewURL);
+  }
+  $(document).ready(function(){
+    const urlParams = new URLSearchParams(window.location.search);
+    const jCode = urlParams.get('jCode');
+
+    if(jCode && jCode !== 'J000000'){
+      subMenu_go(jCode.substring(0,3)+"0000");
+      goPage($('.nav-link[href*="'+jCode+'"]').attr('href'), jCode);
+    }
+  });
+</script>
+
+<th:block th:if="${jobMenu!=null }">
+  <script>
+    goPage('[[${jobMenu.jurl}]]', '[[${jobMenu.jcode}]]');
+    subMenu_go('[[${jobMenu.jcode}]]'.substring(0, 3) + "0000");
+  </script>
+</th:block>
+
+<th:block th:insert="~{module/footer}" />

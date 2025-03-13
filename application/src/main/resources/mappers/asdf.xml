@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+ <mapper namespace="Adoption-Mapper">
+	<sql id="search">
+		<if test="searchType == 'an' ">
+			and ano like '%' ||#{keyword}||'%'
+		</if>
+		<if test="searchType == 'i' ">
+			and aid like '%' ||#{keyword}||'%'
+		</if>
+		<if test="searchType == 'm' ">
+			and mid like '%' ||#{keyword}||'%'
+		</if>
+		<if test="searchType == 's'.toString()">
+			and status like '%' ||#{keyword}||'%'
+		</if>
+	</sql>
+	<select id="selectSearchAdoptionList" parameterType="pageMaker" resultType="adoption">
+		select *
+		from adoption
+		<include refid="search" />
+		order by regDate desc
+	</select>
+	<select id="selectSearchAdoptionListCount" parameterType="pageMaker" resultType="int">
+		select count(*)
+		from adoption
+		<include refid="search" />
+	</select>
+	<select id="selectAdoptionByAno" parameterType="int" resultType="adoption">
+		select *
+		from adoption
+		where ano=#{ano}
+	</select>
+	<select id="selectAdoptionByAid" parameterType="long" resultType="adoption">
+		select *
+		from adoption
+		where aid=#{aid}
+	</select>
+	<select id="selectNoticeSequenceNextValue" resultType="int">
+		select adoption_seq.nextval
+		from dual
+	</select>
+	<select id="selectAdoptionInfoList" resultType="adoption">
+		select *
+		from adoption
+	</select>
+	
+	<insert id="insertAdoption" parameterType="adoption">
+		insert into adoption(ano, regDate, title, content, mid, aid)
+		values(#{ano}, #{regDate}, #{title}, #{content}, #{mid}, #{aid})
+	</insert>
+	<update id="updateAdoption" parameterType="adoption">
+		update adoption
+		set status=#{status}, eid = #{eid, jdbcType=VARCHAR}
+		where ano=#{ano}
+	</update>
+    	<delete id="deleteEmployee" parameterType="str">
+		delete
+		from employee
+		where eid=#{eid}
+	</delete>
+
+    <select id="selectAdoptionDetail" parameterType="int" resultType="AdoptionDetail">
+	select *
+    from ADOPTION_LIST
+    where ano = #{ano}
+	</select>
+	
+ </mapper>

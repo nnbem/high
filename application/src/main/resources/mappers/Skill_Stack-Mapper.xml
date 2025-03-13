@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Skill_Stack-Mapper">
+  <!-- SQL 매핑 구문들 -->
+  <select id="selectSkill_StackList" parameterType="PageMaker" resultType="skill_Stack">
+    SELECT *
+    FROM (
+      SELECT rownum as rnum, t.*
+      FROM (
+        SELECT *
+        FROM SKILL_STACK
+        WHERE 1=1
+          <include refid="search" />
+        ORDER BY skno
+      ) t
+      <![CDATA[
+      WHERE rownum <= #{endRow}
+      ]]>
+    )
+    <![CDATA[
+    WHERE rnum >= #{startRow}
+    ]]>
+  </select>
+
+  <select id="selectSkill_StackListCount" parameterType="pageMaker" resultType="int">
+    SELECT count(*)
+    FROM SKILL_STACK
+    WHERE 1=1
+      <include refid="search" />
+  </select>
+
+  <sql id="search">
+    <if test="searchType == 's'">
+      AND skill_stack LIKE '%'||#{keyword}||'%'
+    </if>
+  </sql>
+</mapper>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-config.dtd">
+ 
+<configuration>
+	<typeAliases>
+		<typeAlias type="java.lang.String" alias="str"/>
+		<typeAlias type="java.lang.Integer" alias="int"/>
+		
+		<typeAlias type="common.application.cla.dto.ClassMenuVO" alias="classMenu"/>
+		<typeAlias type="common.application.cla.dto.ClassMypageMenuVO" alias="classMypageMenu"/>
+		<typeAlias type="common.application.cla.dto.ClassHistoryVO" alias="classHistory"/>
+		<typeAlias type="common.application.cla.dto.FildSkillVO" alias="fildSkill" />
+		<typeAlias type="common.application.cla.dto.ClassListVO" alias="classList"/>
+
+		<typeAlias type="common.application.job.dto.JobMenuVO" alias="jobMenu"/>
+		<typeAlias type="common.application.job.dto.MypageMenuVO" alias="mypageMenu"/>
+		<typeAlias type="common.application.job.dto.Skill_StackVO" alias="skill_Stack"/>
+
+		<typeAlias type="common.application.request.PageMaker" alias="pageMaker"/>	
+	</typeAliases>
+</configuration>

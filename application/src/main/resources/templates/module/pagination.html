@@ -1,0 +1,40 @@
+
+<!-- Hidden Form -->
+<form id="jobForm">  
+  <input type="hidden" name="page" value="" />
+  <input type="hidden" name="perPageNum" value="" />
+  <input type="hidden" name="searchType" value="" />
+  <input type="hidden" name="keyword" value="" />
+</form>
+
+<!-- Pagination 영역 -->
+<div class="pagination">
+  <a href="javascript:search_list(1);">《</a>
+  <a th:href="|javascript:search_list(${pageMaker.page > 1 ? pageMaker.page - 1 : 1});|">〈</a>
+  
+  <th:block th:each="pageNum : ${#numbers.sequence(pageMaker.startPage, pageMaker.endPage)}">
+    <a th:href="|javascript:search_list(${pageNum});|" 
+       th:text="${pageNum}"
+       th:classappend="${pageNum == pageMaker.page} ? ' active'">1</a>
+  </th:block>
+  
+  <a th:href="|javascript:search_list(${pageMaker.page < pageMaker.realEndPage ? pageMaker.page + 1 : pageMaker.realEndPage});|">〉</a>
+  <a th:href="|javascript:search_list(${pageMaker.realEndPage});|">》</a>
+</div>
+
+<script>
+function search_list(page) {
+  let perPageNum = document.querySelector('select[name="perPageNum"]').value;
+  let searchType = document.querySelector('select[name="searchType"]').value;
+  let keyword = document.querySelector('input[name="keyword"]').value;
+  
+  let form = document.querySelector("#jobForm");
+  form.page.value = page;
+  form.perPageNum.value = perPageNum;
+  form.searchType.value = searchType;
+  form.keyword.value = keyword;
+  
+  console.log(page, perPageNum, searchType, keyword);
+  form.submit();
+}
+</script>

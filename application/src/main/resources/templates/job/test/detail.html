@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Learning high 시험 응시</title>
+  <style>
+    * {
+      margin: 0; 
+      padding: 0; 
+      box-sizing: border-box;
+    }
+    body {
+        font-family: 'NanumSquare_ac';
+    }
+
+    /* -------------------- 헤더 스타일 -------------------- */
+    .header {
+      width: 100%;
+      height: 60px;
+      background-color: #008f5e;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px; /* 좌우 여백 */
+    }
+    .header-left {
+      font-weight: bold;
+      color: #333;
+      /* 실제 로고 이미지가 있다면 background나 <img> 태그 등을 활용 가능 */
+    }
+    .header-center {
+      font-size: 30px;
+      color: #ffffff;
+      font-weight: 800;
+    }
+    .header-right {
+      color: #ffffff;
+      font-size: 18px;
+    }
+
+    /* -------------------- 메인 컨테이너 -------------------- */
+    .container {
+      display: flex;
+      /* 헤더(60px)를 제외한 나머지 높이를 사용 */
+      height: calc(100vh - 60px);
+    }
+
+    /* 왼쪽 시험지 영역 */
+    .left-panel {
+      flex: 2;
+      overflow-y: auto;
+      padding: 20px;
+      border-right: 1px solid #ccc;
+    }
+    .question-block {
+      margin-bottom: 40px;
+    }
+    .question-title {
+      font-weight: bold;
+      margin-bottom: 20px;
+      font-size: 22px;
+    }
+    .question-content {
+    font-size: 25px;
+    }
+    .options {
+      margin-top: 10px;
+    }
+    .options div {
+      margin: 5px 0;
+    }
+    .options label {
+      margin-left: 5px;
+      font-size: 22px;
+    }
+    .subjective-area textarea {
+      width: 100%;
+      height: 60px;
+      font-size: 14px;
+      padding: 8px;
+      resize: vertical;
+    }
+
+    /* 오른쪽 답안지 영역 */
+    .right-panel {
+      flex: 1;
+      padding: 10px; /* 여백을 조금 줄임 */
+      overflow-y: hidden; /* 스크롤바 숨김 */
+      min-width: 180px;   /* 너무 좁아지지 않도록 최소 너비 설정 */
+    }
+    .answer-block {
+      margin-bottom: 15px;
+    }
+    .answer-question-number {
+      font-weight: bold;
+      margin-bottom: 5px;
+      cursor: pointer;
+      color: #333;
+    }
+    .answer-content {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .option-item {
+      padding: 4px 8px;
+      border: 1px solid #ccc;
+      cursor: default;
+      border-radius: 4px;
+      user-select: none;
+    }
+    .option-item.selected {
+      background-color: #00A86B;
+      color: #fff;
+      border-color: #00A86B;
+    }
+    /* 주관식 밑줄 (CSS만으로 표현) */
+    .subjective-underline {
+      display: inline-block;
+      min-width: 80px;
+      border-bottom: 1px solid #000;
+      padding: 2px 4px;
+      font-style: italic;
+      color: #333;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+
+<!-- 헤더 영역 -->
+<header class="header">
+  <div class="header-left">LOGO</div>
+  <div class="header-center">Java 기초 시험</div>
+  <div class="header-right">남은 시간: 30:00</div>
+</header>
+
+<div class="container">
+  <!-- 왼쪽: 시험지 패널 -->
+  <div class="left-panel" id="left-panel"></div>
+  
+  <!-- 오른쪽: 답안지 패널 -->
+  <div class="right-panel" id="right-panel"></div>
+</div>
+
+<script>
+// 직접 문제 10개 정의
+const questions = [
+  {
+    id: 1,
+    content: "Java는 어떤 특징을 가지고 있는가?",
+    type: "objective", 
+    options: ["플랫폼 독립적", "저수준 언어", "인터프리터 언어", "어셈블리어 기반"],
+    correct: 1,
+    userAnswer: null
+  },
+  {
+    id: 2,
+    content: "JVM(Java Virtual Machine)은 무엇을 수행하는가?",
+    type: "objective",
+    options: ["메모리 관리", "코드 컴파일", "OS 관리", "스레드 관리"],
+    correct: 2,
+    userAnswer: null
+  },
+  {
+    id: 3,
+    content: "JDK와 JRE의 차이점을 올바르게 설명한 것은?",
+    type: "objective",
+    options: [
+      "JDK는 JRE를 포함한다",
+      "JRE는 JDK를 포함한다",
+      "둘은 같은 개념이다",
+      "JRE는 개발 도구를 포함한다"
+    ],
+    correct: 1,
+    userAnswer: null
+  },
+  {
+    id: 4,
+    content: "Java에서 기본 자료형이 아닌 것은?",
+    type: "objective",
+    options: ["int", "String", "char", "boolean"],
+    correct: 2,
+    userAnswer: null
+  },
+  {
+    id: 5,
+    content: "== 연산자의 기능은?",
+    type: "objective",
+    options: ["객체 비교", "주소 비교", "값 비교", "모든 비교 가능"],
+    correct: 2,
+    userAnswer: null
+  },
+  {
+    id: 6,
+    content: "final 키워드를 사용하면?",
+    type: "objective",
+    options: ["상속 가능", "변수 재할당 가능", "상수로 선언됨", "컴파일 시 오류"],
+    correct: 3,
+    userAnswer: null
+  },
+  {
+    id: 7,
+    content: "static 키워드의 역할은?",
+    type: "objective",
+    options: ["클래스별 공유", "객체별 공유", "메모리 해제 기능", "동적 바인딩"],
+    correct: 1,
+    userAnswer: null
+  },
+  {
+    id: 8,
+    content: "오버로딩과 오버라이딩 차이가 아닌 것은?",
+    type: "objective",
+    options: ["매개변수 개수 변경", "접근 제어자 변경", "반환형 변경", "상속 필수 여부"],
+    correct: 3,
+    userAnswer: null
+  },
+  {
+    id: 9,
+    content: "Java 인터페이스에 대한 설명으로 틀린 것은?",
+    type: "objective",
+    options: ["다중 상속 가능", "메소드 본문 없음", "상속 시 implements 사용", "추상 클래스와 비슷함"],
+    correct: 1,
+    userAnswer: null
+  },
+  {
+    id: 10,
+    content: "finally 블록은 언제 실행되는가?",
+    type: "objective",
+    options: ["예외 발생 시만", "예외 없을 때만", "항상 실행", "선택적으로 실행"],
+    correct: 3,
+    userAnswer: null
+  }
+];
+
+// 페이지 로드 후 시험지/답안지 렌더
+document.addEventListener('DOMContentLoaded', () => {
+  renderLeftPanel();
+  renderRightPanel();
+});
+
+/*************************************************************
+ * 왼쪽 시험지(스크롤형) 렌더링
+ *************************************************************/
+function renderLeftPanel() {
+  const leftPanel = document.getElementById('left-panel');
+  leftPanel.innerHTML = '';
+
+  questions.forEach((q, index) => {
+    const block = document.createElement('div');
+    block.className = 'question-block';
+    block.id = `question-block-${q.id}`;
+
+    let html = `<div class="question-title">문제 ${index + 1}</div>`;
+    html += `<div class="question-content">${q.content}</div>`;
+
+    // 객관식
+    html += `<div class="options">`;
+    if (q.options && q.options.length > 0) {
+      q.options.forEach((opt, i) => {
+        const checked = (q.userAnswer === opt) ? 'checked' : '';
+        html += `
+          <div>
+            <input type="radio" name="q-${q.id}" id="q-${q.id}-opt-${i}" value="${opt}" ${checked}>
+            <label for="q-${q.id}-opt-${i}">${opt}</label>
+          </div>
+        `;
+      });
+    } else {
+      html += `<div>보기 없음</div>`;
+    }
+    html += `</div>`;
+
+    block.innerHTML = html;
+    leftPanel.appendChild(block);
+
+    // 이벤트 리스너 등록
+    const radios = block.querySelectorAll(`input[name="q-${q.id}"]`);
+    radios.forEach(radio => {
+      radio.addEventListener('change', (e) => {
+        q.userAnswer = e.target.value;
+        updateRightPanel();
+      });
+    });
+  });
+}
+
+/*************************************************************
+ * 오른쪽 답안지 렌더링
+ *************************************************************/
+function renderRightPanel() {
+  const rightPanel = document.getElementById('right-panel');
+  rightPanel.innerHTML = '';
+
+  questions.forEach((q, index) => {
+    const answerBlock = document.createElement('div');
+    answerBlock.className = 'answer-block';
+
+    // 문제 번호 (클릭 시 해당 문제로 스크롤 이동)
+    const questionNumberDiv = document.createElement('div');
+    questionNumberDiv.className = 'answer-question-number';
+    questionNumberDiv.innerText = `문제 ${index + 1}`;
+    questionNumberDiv.onclick = () => scrollToQuestion(q.id);
+
+    // 답안 표시 영역
+    const answerContentDiv = document.createElement('div');
+    answerContentDiv.className = 'answer-content';
+    answerContentDiv.id = `answer-content-${q.id}`;
+
+    if (q.options && q.options.length > 0) {
+      // 객관식 보기 1, 2, 3, 4... 표시
+      q.options.forEach((opt, idx) => {
+        const span = document.createElement('span');
+        span.className = 'option-item';
+        span.innerText = (idx + 1).toString();
+        if (q.userAnswer === opt) {
+          span.classList.add('selected');
+        }
+        answerContentDiv.appendChild(span);
+      });
+    } else {
+      const span = document.createElement('span');
+      span.innerText = '보기 없음';
+      answerContentDiv.appendChild(span);
+    }
+
+    answerBlock.appendChild(questionNumberDiv);
+    answerBlock.appendChild(answerContentDiv);
+    rightPanel.appendChild(answerBlock);
+  });
+}
+
+/*************************************************************
+ * 특정 문제로 스크롤 이동
+ *************************************************************/
+function scrollToQuestion(questionId) {
+  const target = document.getElementById(`question-block-${questionId}`);
+  if (target) {
+    target.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+/*************************************************************
+ * 오른쪽 답안지 업데이트 (실시간 반영)
+ *************************************************************/
+function updateRightPanel() {
+  questions.forEach((q) => {
+    const answerContentDiv = document.getElementById(`answer-content-${q.id}`);
+    if (!answerContentDiv) return;
+    answerContentDiv.innerHTML = '';
+
+    if (q.options && q.options.length > 0) {
+      q.options.forEach((opt, idx) => {
+        const span = document.createElement('span');
+        span.className = 'option-item';
+        span.innerText = (idx + 1).toString();
+        if (q.userAnswer === opt) {
+          span.classList.add('selected');
+        }
+        answerContentDiv.appendChild(span);
+      });
+    } else {
+      const span = document.createElement('span');
+      span.innerText = '보기 없음';
+      answerContentDiv.appendChild(span);
+    }
+  });
+}
+</script>
+</body>
+</html>

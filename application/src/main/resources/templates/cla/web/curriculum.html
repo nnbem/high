@@ -1,0 +1,43 @@
+<link rel="stylesheet" th:href="@{/css/ClassStyle.css}" />
+
+<div class="class_content">
+    <section class="class_intro">
+        <h2>커리큘럼소개</h2>
+    </section>
+
+    <div class="info">
+      <table class="info_table">
+        <tr>
+          <td class="th"><p>UI/UX 개발자</p></td>
+          <td class="td"><span>HTML/CSS</span></td>
+          <td class="td"><span>Figma</span></td>
+          <td class="td"><span>JavaScript</span></td>
+        </tr>
+        <tr>
+          <td class="th"><p>프론트엔드 엔지니어</p></td>
+          <td class="td"><span>React</span></td>
+          <td class="td"><span>Next.js</span></td>
+          <td class="td"><span>TypeScript</span></td>
+        </tr>
+        <tr>
+          <td class="th"><p>백엔드 엔지니어</p></td>
+          <td class="td"><span>Node.js</span></td>
+          <td class="td"><span>Express.js</span></td>
+          <td class="td"><span>Java<br/>(Spring Boot)</span></td>
+          <td class="td"><span>MySQL</span></td>
+          <td class="td"><span>Firebase</span></td>
+        </tr>
+        <tr>
+          <td class="th"><p>풀스택 개발자</p></td>
+          <td class="td"><span>Docker</span></td>
+          <td class="td"><span>AWS</span></td>
+          <td class="td"><span>CI/CD</span></td>
+        </tr>           
+      </table>
+    </div>
+    <div class="btn">
+      <button onclick="location.href='info/modify';" class="info_modify"></button>
+    </div>
+</div>
+
+<th:block th:insert="~{module/common_js}"></th:block>

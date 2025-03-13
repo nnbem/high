@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ClassList-Mapper">
+    <sql id="search">
+        <if test="searchType == 'n'">
+            and class_name like '%' || #{keyword} || '%'
+        </if>
+    </sql>
+
+    <select id="selectClassList" parameterType="pageMaker" resultType="classList">
+        select *
+        from class_list
+        where clno is not NULL
+        <include refid="search" />
+        order by clno asc
+    </select>
+    <select id="selectClassListByField" parameterType="pageMaker" resultType="classList">
+        select *
+        from class_list
+        where fno = #{fno}
+        <include refid="search" />
+        order by clno asc
+    </select>
+    <select id="selectClassListCount" parameterType="pageMaker" resultType="int">
+        select count(*)
+        from class_list
+        where clno is not null
+        <include refid="search" />
+    </select>
+    <select id="selectClassListCountByField" parameterType="pageMaker" resultType="int">
+        select count(*)
+        from class_list
+        where fno = #{fno}
+        <include refid="search" />
+    </select>
+
+</mapper>

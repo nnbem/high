@@ -1,0 +1,144 @@
+<th:block th:insert="~{module/cla/cheader}" />
+<!-- 상단 탑바 -->
+<div class="topbar-login">
+  <th:block th:if="${session.loginUser == null}" >
+    <a></a><a href="member/loginForm">로그인</a>
+  </th:block>
+  <th:block th:if="${session.loginUser != null}" >
+    <a href="member/logout">로그아웃</a> | <a href="#">마이페이지</a>
+  </th:block>
+  <th:block th:insert="~{module/cla/cheader}" />
+  <th:block th:each="classMypageMenu : ${classMypageMenuList}">
+    <a class="mypageifr" th:href="|javascript:classMypageSubMenu_go('${classMypageMenu.cmcode}');goPage('@{${classMypageMenu.cmurl}}','${classMypageMenu.cmcode}');|"
+    th:text="${classMypageMenu.cmname}">
+    </a>
+  </th:block>
+</div>
+<header class="topbar">
+  <div class="topbar-logo">
+    <a th:href="@{/class/main}">
+      <img th:src="@{/images/Logo.png}" alt="로고" class="logo-img">
+    </a>
+    <nav class="topbar-menu">
+      <ul>
+        <th:block th:each="classMenu : ${classMenuList}">
+          <li class="ifr_li">
+            <a th:href="|javascript:subMenu_go('${classMenu.ccode }');goPage('@{${classMenu.curl}}','${classMenu.ccode }');|"
+                class="nav-link"
+                th:text="${classMenu.cname }">
+            </a>
+          </li>
+        </th:block>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<!-- 메인 래퍼: 왼쪽 사이드바 + 본문 -->
+<div class="main-wrap">
+  <!-- 왼쪽 사이드바 -->
+  <aside class="csidebar">
+    <ul class="subMenuList">
+      
+    </ul>
+  </aside>
+  <hr />
+  <!-- 본문 컨텐츠 영역 -->
+  <main class="content">
+    <iframe name="ifr" src="" frameborder="0" style="width:100%;height:100%;">
+
+    </iframe>
+  </main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+<script type="text/x-handlebars-template"  id="subMenu-list-template" >
+{{#each .}}      
+<li class="subIfr_li" >
+  <a th:href="|javascript:goPage('@{/}{{curl}}','{{ccode }}');|">
+      {{cname}}
+    </a>
+</li>
+{{/each}}
+</script>
+
+<script type="text/x-handlebars-template" id="mypage-subMenu-list-template">
+  {{#each .}}      
+  <li class="subIfr_li">
+    <a href="javascript:goPage('{{cmurl}}','{{cmcode}}');">
+      {{cmname}}
+    </a>
+  </li>
+  {{/each}}
+</script>
+
+<script>
+  var sub_func= Handlebars.compile($("#subMenu-list-template").html());
+  var sub_func_mypage = Handlebars.compile($("#mypage-subMenu-list-template").html());
+
+  function subMenu_go(cCode){
+    //alert(cCode);
+    
+    if(cCode=="C000000") {
+      $('.subMenuList').html("");
+      return;
+    }
+    
+    $.ajax({
+      url:"[[@{/class/menu/subMenu}]]?cCode="+cCode,
+      method:"get",
+      success:function(data){
+        $('.subMenuList').html(sub_func(data));      
+      }
+    });
+  }
+  
+    // 마이페이지 서브메뉴 호출용
+    function classMypageSubMenu_go(cmCode) {
+    if (cmCode == "CM000000") {
+      $('.subMenuList').html("");
+      return;
+    }
+
+    $.ajax({
+      url: "[[@{/class/mypagemenu/subMypageMenu}]]?cmCode=" + cmCode,
+      method: "get",
+      success: function (data) {
+        $('.subMenuList').html(sub_func_mypage(data));
+      }
+    });
+  }
+
+  function goPage(url,cCode){
+    // alert(url+":"+cCode);
+    url = url.replace(/([^:]\/)\/+/g, "$1");
+
+    $('iframe[name="ifr"]').attr("src",url);
+    var renewURL = "[[@{/class/main/ifr}]]";
+      
+      if (cCode != 'C000000' && cCode != 'CM000000') {
+          renewURL += "?cCode="+cCode;
+      }
+      //페이지를 리로드하지 않고 페이지 주소만 변경할 때 사용
+      history.pushState(cCode, null, renewURL);
+  }
+  
+  $(document).ready(function(){
+    const urlParams = new URLSearchParams(window.location.search);
+    const cCode = urlParams.get('cCode');
+
+    if(cCode && cCode !== 'C000000'){
+      subMenu_go(cCode.substring(0,3)+"0000");
+      goPage($('.nav-link[href*="'+cCode+'"]').attr('href'), cCode);
+    }
+  });
+  </script>
+  
+  <th:block th:if="${classMenu!=null }">
+    <script>
+    goPage('[[${classMenu.curl}]]','[[${classMenu.ccode}]]');
+    subMenu_go('[[${classMenu.ccode}]]'.substring(0,3)+"0000");
+    </script>
+  </th:block>
+
+<th:block th:insert="~{module/footer}" />

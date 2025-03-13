@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ClassHistory-Mapper">
+    <sql id="search">
+        <if test="searchType == 'n'.toString()">
+            and class_name like '%'||#{keyword}||'%'
+        </if>
+        <if test="searchType == 'f'.toString()">
+            and fno = #{keyword}
+        </if>
+        <if test="searchType == 'c'.toString()">
+            and complete = #{keyword}
+        </if>
+    </sql>
+    
+    <select id="selectAllClassHistoryList" resultType="classHistory">
+        select *
+        from class_history_list
+        order by chno desc
+    </select>
+    <select id="selectSearchClassHistoryList" resultType="classHistory">
+        select *
+        from (
+            select rownum as rnum, SearchResult.*
+            from (
+                select *
+                from class_history_list
+                where chno is not null
+                <include refid="search" />
+                order by regDate desc
+            ) SearchResult
+            <![CDATA[
+            where rownum <= #{endRow}
+            ]]>
+        )
+        where rnum >= #{startRow}
+    </select>
+    
+    <select id="selectSearchClassHistoryListCount" resultType="int">
+        select count(*)
+        from class_history_list
+        where chno is not null
+        <include refid="search" />
+    </select>
+    
+    <select id="selectPopularity" resultType="classHistory">
+        SELECT 
+            clno, 
+            class_name, 
+            class_video, 
+            fno,
+            COUNT(mid) AS enrollCount
+        FROM class_history_list
+        where 1=1
+        group by clno, class_name, class_video, fno
+        order by enrollCount desc
+    </select>
+    <select id="getEnrolledCoursesByMid" resultType="classHistory">
+        select *
+        from class_history
+        where mid = #{mid}
+        order by regDate desc
+    </select>
+    
+    <insert id="insertEnroll" parameterType="classHistory">
+        insert into class_history(chno, mid, clno, regDate, class_history, complete)
+        values(CLASS_HISTORY_SEQ.nextval, #{mid}, #{clno}, sysdate, 0, 0)
+    </insert>
+    
+    <update id="updateHistory" parameterType="classHistory">
+        update class_history
+        set class_history = #{class_history}
+        where chno = #{chno}
+    </update>
+    
+    <delete id="deleteEnroll" parameterType="classHistory">
+        delete from class_history
+        where clno = #{clno}
+    </delete>
+    
+</mapper>

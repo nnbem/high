@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="MypageMenu-Mapper">
+    <select id="selectMainMypageMenu" resultType="mypageMenu">
+        select *
+        from mmenu
+        where mCode like '%'||'0000'
+        order by mCode asc
+    </select>
+    <select id="selectSubMypageMenu" resultType="mypageMenu">
+        select *
+        from mmenu
+        where upCode = #{mCode} and isNav=1
+    </select>
+    <select id="selectMypageMenuByMcode" resultType="mypageMenu">
+        select *
+        from mmenu
+        where mCode = #{mCode}
+    </select>
+    <select id="selectMypageMenuByMname" resultType="mypageMenu">
+        select *
+        from mmenu
+        where mName = #{mName}
+    </select>
+</mapper>
