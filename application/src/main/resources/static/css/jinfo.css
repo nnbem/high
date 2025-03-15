@@ -1,101 +1,163 @@
-*{
-    font-family: NanumSquare_ac;
+* {
+    margin: 0;
+    font-family: 'NanumSquare_ac';
+}
+body {
+    color: #353535;
 }
 
-div.info{
+/* 본문 */
+.class_content {
+    flex: 1;
+    background-color: #fff;
+    border-radius: 10px;
+    margin: 4%;
+}
+
+.class_intro_box {
+    background-color: #f1f1f1;
+    padding: 20px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.class_intro_box p {
+    flex: 3;
+    font-size: 15px;
+}
+
+.class_intro h2 {
+    font-size: 30px;
+    margin-bottom: 4%;
+}
+
+.class_intro p {
+    font-size: 20px;
+    line-height: 1.6;
+}
+
+div.info {
     display: flex;
     flex-direction: column;
-    width: 90%;
-    margin: 70px;
+    width: 100%;
 }
-div.member-profile{
+
+div.member-profile {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
+    margin-left: 38%;
 }
-div.detail-img{
-    width:80px;
-    height:110px;
+
+div.m_info {
+    display: flex;
+    flex-direction: column;
+    width: 54%;
+    margin-left: 23%;
+}
+
+div.m_member-profile {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-left: 36%;
+}
+
+div.detail-img {
+    width: 80px;
+    height: 110px;
     background-color: #F4F6FA;
-    display: flex;    
+    display: flex;
 }
-div.mimg{
+
+div.mimg {
     width: 110px;
     height: 150px;
     background-color: #F4F6FA;
     display: flex;
-} 
+}
 
-div.mimg div.modify-img{
+div.mimg div.modify-img {
     width: 20px;
     height: 20px;
     margin-left: 5px;
     cursor: pointer;
 }
 
-div.mstring{
+div.mstring {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    margin-top: 6%;
 }
-div.mstring span{
-    margin:10px;
+
+div.mstring span {
+    margin: 10px;
     font-family: NanumSquare_ac ExtraBold;
 }
 
 table.info-table {
+    width: 54%;
+    margin-top: 30px;
+    margin-left: 23%;
+    border-collapse: collapse;
+}
+
+table.info-modify-table {
     width: 100%;
     margin-top: 30px;
     border-collapse: collapse;
 }
-table.info-modify-table{
-    width: 100%;
-    margin-top: 30px;
-    border-collapse: collapse;    
-}
 
-.info-table tr{
+.info-table tr {
     margin: 10px;
     border: 1px solid #ddd;
     height: 50px;
 }
 
-.info-modify-table tr{
+.info-modify-table tr {
     margin: 10px;
-    height: 50px;    
+    height: 50px;
 }
-table .th{
+
+table .th {
     width: 135px;
     color: var(--gray70);
     font-size: 14px;
     line-height: 40px;
     text-align: center;
 }
-table .th p{
+
+table .th p {
     font-family: NanumSquare_ac ExtraBold;
     margin: 0;
 }
+
 table .td {
     border-bottom: 1px solid var(--gray30);
     text-align: left;
     padding: 0 24px;
 }
-.info-modify-table .td .info-modify-input{
+
+.info-modify-table .td .info-modify-input {
     width: 100%;
     height: 30px;
 }
 
 
-div.span{
+div.span {
     display: flex;
     align-items: center;
 }
-div.btn{
+
+div.btn {
     display: flex;
     justify-content: flex-end;
-    padding: 20px;
 }
-button.info-modify{
+
+button.info-modify {
     width: 150px;
     height: 40px;
     background-color: #00A86B;
@@ -107,31 +169,34 @@ button.info-modify{
     cursor: pointer;
 }
 
-div.input-group{
-	display: flex;
+div.input-group {
+    display: flex;
     padding-top: 10px;
-	justify-content: space-between;
-	align-items: center;
-	text-align: center;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
 }
-div.input-group label{
-	padding: 8px;
-	font-size: 15px;
-	float: left;
+
+div.input-group label {
+    padding: 8px;
+    font-size: 15px;
+    float: left;
 }
-input.form-control{
-	width: 100%;
-	padding-left: 10px;
-	margin-left: 10px;
-	background-color: #E6E6E6;	
+
+input.form-control {
+    width: 100%;
+    padding-left: 10px;
+    margin-left: 10px;
+    background-color: #E6E6E6;
 }
 
 
-.input-group>.custom-select:not(:first-child), .input-group>.form-control:not(:first-child) {
-	border-radius:5px;
+.input-group>.custom-select:not(:first-child),
+.input-group>.form-control:not(:first-child) {
+    border-radius: 5px;
 }
 
-div.Label{
+div.Label {
     width: 91px;
     padding: 10px;
     height: 11px;
@@ -139,25 +204,26 @@ div.Label{
     border-radius: 5px;
     cursor: pointer;
 }
-div.Label label{
-	padding: 0;
-	color: white;
-	font-size: 15px;
-	cursor: pointer;
+
+div.Label label {
+    padding: 0;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
 }
 
-div.picture_file{
+div.picture_file {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
 }
 
-div.container_group{
+div.container_group {
     margin: 0 18px;
 }
 
-div.member-img{
+div.member-img {
     background-image: url(/application/class/getPicture?mid=haesui);
     width: 100%;
     height: 100%;

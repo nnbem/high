@@ -1,0 +1,63 @@
+<link rel="stylesheet" th:href="@{/css/ClassStyle.css}" />
+
+<div class="class_content">
+    <section class="class_intro">
+        <h2>수강신청</h2>
+    </section>
+
+    <div id="courseList">
+        <th:block th:if="${classList == null or #lists.isEmpty(classList)}">
+            <div class="no_course_message">
+                <p><strong>해당 강의가 없습니다.</strong></p>
+            </div>
+        </th:block>
+    
+        <th:block th:if="${classList != null and not #lists.isEmpty(classList)}">
+            <th:block th:each="course : ${classList}">
+                <div class="course_card">
+                    <div class="course_info">
+                        <span class="field" th:text="${course.field}"></span>
+                        <h3 th:text="${course.class_name}"></h3>
+                        <p th:text="'영상 길이: ' + ${course.getFormattedVideoLength()}"></p>
+                    </div>
+                    <button class="apply-btn" th:data-clno="${course.clno}" th:data-classname="${course.class_name}"
+                    onclick="applyCourse(this.getAttribute('data-clno'), this.getAttribute('data-classname'))">수강신청</button>
+
+                </div>
+            </th:block>
+        </th:block>
+        <th:block th:insert="~{module/pagination}" />
+    </div>
+    
+</div>
+
+<br />
+<br />
+<br />
+<br />
+
+<script>
+function applyCourse(clno, className) {
+    fetch('/application/class/myclassroom/enroll/regist', {  
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({ clno: clno })  
+    })
+    .then(response => response.text().then(text => ({ ok: response.ok, text })))
+    .then(({ ok, text }) => {
+        if (!ok) {
+            throw new Error(text);
+        }
+        alert(`${className} 수강 신청이 완료되었습니다!`); 
+        location.reload(); 
+    })
+    .catch(error => {
+        alert(error.message);
+        console.error("Error:", error);
+    });
+}
+</script>
+
+
+
+

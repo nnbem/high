@@ -5,8 +5,11 @@
 
 <mapper namespace="ClassList-Mapper">
     <sql id="search">
-        <if test="searchType == 'n'">
-            and class_name like '%' || #{keyword} || '%'
+        <if test="searchType eq 'n'">
+            AND class_name LIKE '%' || #{keyword} || '%'
+        </if>
+        <if test="'f'.equals(searchType)">
+            AND field = #{keyword}
         </if>
     </sql>
 

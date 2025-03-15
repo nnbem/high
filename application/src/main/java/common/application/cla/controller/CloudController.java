@@ -13,29 +13,30 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import common.application.cla.dto.ClassListVO;
+import common.application.cla.service.ClassHistoryService;
 import common.application.cla.service.ClassListService;
 import common.application.request.PageMaker;
 
 @Controller
 @RequestMapping("class")
-public record IoTController(ClassListService classListService) {
+public record CloudController(ClassListService classListService, ClassHistoryService classHistoryService) {
 
-    @GetMapping("/iot")
+    @GetMapping("/cloud")
     public String iot() {
-        String url = "cla/IoT/IoT";
+        String url = "cla/cloud/cloud";
         return url;
     }
 
-    @GetMapping("/iot/curriculum")
+    @GetMapping("/cloud/curriculum")
     public String curriculum() {
-        String url = "cla/iot/curriculum";
+        String url = "cla/cloud/curriculum";
         return url;
     }
 
-    @GetMapping("/iot/enroll")
+    @GetMapping("/cloud/enroll")
     public String showEnrollPage(@ModelAttribute PageMaker pageMaker, Model model) throws SQLException {
 
-        pageMaker.setFno(2);
+        pageMaker.setFno(5);
 
         List<ClassListVO> classList = classListService.selectClassListByField(pageMaker);
         model.addAttribute("classList", classList);
@@ -44,10 +45,10 @@ public record IoTController(ClassListService classListService) {
         pageMaker.setTotalCount(totalCount);
         model.addAttribute("pageMaker", pageMaker);
 
-        return "cla/iot/enroll";
+        return "cla/cloud/enroll";
     }
 
-    @PostMapping("/iot/enroll")
+    @PostMapping("/cloud/enroll")
     public ResponseEntity<String> enrollCourse(@RequestParam String clno) {
         System.out.println("수강 신청 시도: clno = " + clno);
         return ResponseEntity.ok("강의 " + clno + " 수강 신청 완료");

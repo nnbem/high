@@ -104,3 +104,74 @@
     background-color: #ddd;
 }
 
+/* ==== */
+
+.course-card {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 15px;
+    border: 1px solid #a7a7a7;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.course-info {
+    flex: 1;
+}
+
+.course-info h3 {
+    margin: 11px 0;
+    color: #333;
+    font-size: 25px;
+}
+
+.status {
+    color: #1db954;
+    font-weight: bold;
+}
+
+.course-info p {
+    font-size: 14px;
+    color: #666;
+    padding: 3px;
+    padding-top: 11px;
+}
+
+.tag {
+    display: inline-block;
+    background: #1db954;
+    color: white;
+    font-size: 12px;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+/* 버튼 스타일 */
+.course-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.continue-btn {
+    background: #1db954;
+    border: none;
+    color: white;
+    padding: 12%;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: NanumSquare_ac ExtraBold;
+}
+.continue-btn:hover {
+    background: rgb(13, 187, 121);
+    transition: 0.3s ease-in-out;
+}
+
+.disabled-btn {
+    border: none;
+    color: gray;
+    padding: 10px;
+    border-radius: 5px;
+}

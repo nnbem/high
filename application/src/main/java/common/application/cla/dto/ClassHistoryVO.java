@@ -18,4 +18,20 @@ public class ClassHistoryVO {
     private int enrollCount;    // 수강신청카운트
     private int state;          // 상태
 
+    private String class_name;  // 강의명
+    private int fno;            // 분야 번호
+    private String field;       //분야명
+
+    public String getFormattedclass_history() {
+        int hours = class_history / 3600;
+        int minutes = (class_history % 3600) / 60;
+        int seconds = class_history % 60;
+        
+        if (hours > 0) {
+            return String.format("%d시간 %d분 %d초", hours, minutes, seconds);
+        } else {
+            return String.format("%d분 %d초", minutes, seconds);
+        }
+    }
+
 }

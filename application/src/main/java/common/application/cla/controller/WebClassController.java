@@ -44,25 +44,21 @@ public record WebClassController(ClassListService classListService, ClassHistory
         return url;
     }
 
-
     @GetMapping("/web/enroll")
     public String showEnrollPage(@ModelAttribute PageMaker pageMaker, Model model) throws SQLException {
+        pageMaker.setFno(1);
 
-    pageMaker.setFno(1);
-    
-    // 강의 목록 조회 (페이징 적용된 목록)
-    List<ClassListVO> classList = classListService.selectClassListByField(pageMaker);
-    model.addAttribute("classList", classList);
-    
-    // 총 강의 개수 조회 (페이지네이션을 위한 값)
-    int totalCount = classListService.selectClassListCountByField(pageMaker);
-    pageMaker.setTotalCount(totalCount);
-    model.addAttribute("pageMaker", pageMaker);
-    
-    return "cla/web/enroll";
+        List<ClassListVO> classList = classListService.selectClassListByField(pageMaker);
+        model.addAttribute("classList", classList);
+
+        int totalCount = classListService.selectClassListCountByField(pageMaker);
+        pageMaker.setTotalCount(totalCount);
+        model.addAttribute("pageMaker", pageMaker);
+
+        return "cla/web/enroll";
     }
 
-    @PostMapping("/web/enroll") // ✅ URL 변경
+    @PostMapping("/web/enroll")
     public ResponseEntity<String> enrollCourse(@RequestParam String clno) {
         System.out.println("수강 신청 시도: clno = " + clno);
         return ResponseEntity.ok("강의 " + clno + " 수강 신청 완료");
@@ -70,33 +66,30 @@ public record WebClassController(ClassListService classListService, ClassHistory
 
     @PostMapping("/myclassroom/enroll/regist")
     public ResponseEntity<String> enrollCourse(@RequestParam String clno, HttpSession session) {
-    // MemberVO 객체 통째로 가져오기
-    MemberVO member = (MemberVO) session.getAttribute("loginUser");
+        MemberVO member = (MemberVO) session.getAttribute("loginUser");
 
-    // 로그인되지 않은 사용자는 요청 거부
-    if (member == null) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body("로그인이 필요합니다!");
+        if (member == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("로그인이 필요합니다!");
+        }
+
+        String mid = member.getMid();
+
+        try {
+            ClassHistoryVO classHistory = new ClassHistoryVO();
+            classHistory.setMid(mid);
+            classHistory.setClno(Integer.parseInt(clno));
+
+            classHistoryService.insertEnroll(classHistory);
+
+            return ResponseEntity.ok("강의 " + clno + " 수강 신청이 완료되었습니다!");
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body("이미 수강신청된 강의입니다!");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("오류 발생: " + e.getMessage());
+        }
     }
-
-    // 로그인 사용자 아이디 추출
-    String mid = member.getMid();
-
-    try {
-        ClassHistoryVO classHistory = new ClassHistoryVO();
-        classHistory.setMid(mid);
-        classHistory.setClno(Integer.parseInt(clno));
-
-        classHistoryService.insertEnroll(classHistory);
-
-        return ResponseEntity.ok("강의 " + clno + " 수강 신청이 완료되었습니다!");
-    } catch (DataIntegrityViolationException e) {
-        return ResponseEntity.status(HttpStatus.CONFLICT)
-                .body("이미 수강신청된 강의입니다!");
-    } catch (Exception e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("오류 발생: " + e.getMessage());
-    }
-}
 
 }

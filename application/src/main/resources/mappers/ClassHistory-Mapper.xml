@@ -5,44 +5,40 @@
 
 <mapper namespace="ClassHistory-Mapper">
     <sql id="search">
-        <if test="searchType == 'n'.toString()">
-            and class_name like '%'||#{keyword}||'%'
-        </if>
-        <if test="searchType == 'f'.toString()">
-            and fno = #{keyword}
-        </if>
-        <if test="searchType == 'c'.toString()">
-            and complete = #{keyword}
+        <if test="searchType != null and searchType != ''">
+            <if test="searchType eq 'n'">
+                AND class_name LIKE '%' || #{keyword} || '%'
+            </if>
+            <if test="'f'.equals(searchType)">
+                AND field = #{keyword}
+            </if>
+            <if test="searchType eq 'c'">
+                AND complete = #{keyword}
+            </if>
         </if>
     </sql>
     
-    <select id="selectAllClassHistoryList" resultType="classHistory">
-        select *
-        from class_history_list
-        order by chno desc
-    </select>
-    <select id="selectSearchClassHistoryList" resultType="classHistory">
-        select *
-        from (
-            select rownum as rnum, SearchResult.*
-            from (
-                select *
-                from class_history_list
-                where chno is not null
-                <include refid="search" />
-                order by regDate desc
-            ) SearchResult
-            <![CDATA[
-            where rownum <= #{endRow}
-            ]]>
-        )
-        where rnum >= #{startRow}
+    <select id="selectClassHistoryList" parameterType="map" resultType="classHistory">
+        SELECT 
+            CHNO,
+            REGDATE,
+            MID,
+            CLNO,
+            CLASS_HISTORY,
+            COMPLETE,
+            ENROLLCOUNT,
+            CLASS_NAME,
+            FNO,
+            FIELD
+        FROM CLASS_HISTORY_LIST
+        WHERE MID = #{mid}
+        ORDER BY REGDATE DESC
     </select>
     
     <select id="selectSearchClassHistoryListCount" resultType="int">
         select count(*)
         from class_history_list
-        where chno is not null
+        where 1=1
         <include refid="search" />
     </select>
     
@@ -59,12 +55,63 @@
         order by enrollCount desc
     </select>
     <select id="getEnrolledCoursesByMid" resultType="classHistory">
-        select *
-        from class_history
-        where mid = #{mid}
-        order by regDate desc
+        SELECT
+        chno,
+        mid,
+        clno,
+        regDate,
+        class_history,
+        complete,
+        enrollCount,
+        state,
+        class_name,
+        fno                      
+        FROM class_history_list
+        WHERE mid = #{mid}
+        ORDER BY regDate DESC
+    </select>
+
+    <!-- 전체 레코드 개수 조회 -->
+    <select id="getTotalRecords" parameterType="map" resultType="int">
+        SELECT COUNT(*) 
+        FROM class_history
+        WHERE mid = #{mid}
+        <if test="searchType != null and keyword != null and keyword != ''">
+            AND ${searchType} LIKE CONCAT('%', #{keyword}, '%')
+        </if>
     </select>
     
+    <select id="selectSearchClassHistoryList" parameterType="map" resultType="classHistory">
+        SELECT *
+        FROM
+        (
+            SELECT A.*,
+                ROWNUM AS rn
+            FROM
+            (
+                SELECT 
+                    CHNO,
+                    REGDATE,
+                    MID,
+                    CLNO,
+                    CLASS_HISTORY,
+                    COMPLETE,
+                    ENROLLCOUNT,
+                    CLASS_NAME,
+                    FNO,
+                    FIELD
+                FROM CLASS_HISTORY_LIST
+                WHERE mid = #{mid}
+                <if test="searchType != null and keyword != null and keyword != ''">
+                    AND ${searchType} LIKE '%' || #{keyword} || '%'
+                </if>
+                ORDER BY regDate DESC
+            ) A
+            WHERE ROWNUM &lt;= #{endRow}  <!-- endRow까지 -->
+        )
+        WHERE rn &gt;= #{startRow}       <!-- startRow 이상 -->
+    </select>
+
     <insert id="insertEnroll" parameterType="classHistory">
         insert into class_history(chno, mid, clno, regDate, class_history, complete, state)
         values(CLASS_HISTORY_SEQ.nextval, #{mid}, #{clno}, sysdate, 0, 0, 0)

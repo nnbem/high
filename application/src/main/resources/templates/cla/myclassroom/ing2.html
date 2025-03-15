@@ -1,0 +1,51 @@
+<link rel="stylesheet" th:href="@{/css/ClassStyle.css}" />
+<link rel="stylesheet" th:href="@{/css/CommonStyle.css}" />
+
+<div class="class_content">
+  <section class="class_intro">
+    <h2>수강중인강의</h2>
+  </section>
+
+  <!-- 필터 및 검색 -->
+  <div class="filter-bar" th:object="${pageMaker}">
+    <button class="refresh-btn" onclick="window.location.reload();">⟳</button>
+    <select class="sort-select" name="perPageNum" id="perPageNum">
+      <option value="10" th:selected="${pageMaker.perPageNum == 10}">전체</option>
+      <option value="20" th:selected="${pageMaker.perPageNum == 20}">20개씩</option>
+      <option value="50" th:selected="${pageMaker.perPageNum == 50}">50개씩</option>
+    </select>
+
+    <select class="category-select" name="searchType" id="searchType">
+      <option value="nfc" th:selected="${searchType == null or searchType == 'nfc'}">전체</option>
+      <option value="f" th:selected="${searchType == 'f'}">분야</option>
+      <option value="n" th:selected="${searchType == 'n'}">강의명</option>
+      <option value="c" th:selected="${searchType == 'c'}">상태</option>
+  </select>
+  <div class="search_box">
+    <input type="text" id="keyword" name="keyword" placeholder="검색어를 입력하세요." 
+        th:value="${keyword != null ? keyword : ''}" />
+        <button class="search_btn" onclick="search_list(1);">⌕</button>
+  </div>
+
+</div>
+
+
+<div id="courseList">
+    <tr th:if="${#lists.isEmpty(historyList)}">
+        <td colspan="5" style="text-align: center;">수강 내역이 없습니다.</td>
+    </tr>
+    <th:block th:if="${historyList != null and not #lists.isEmpty(historyList)}">
+        <th:block th:each="course : ${historyList}">
+            <div class="course_card">
+                <div class="course_info">
+                    <span class="field" th:text="${course.field}"></span>
+                    <h3 th:text="${course.class_name}"></h3>
+                    <p th:text="'시청 시간: ' + ${course.getFormattedclass_history()}"></p>
+                </div>
+            </div>
+        </th:block>
+    </th:block>
+</div>
+  <th:block th:insert="~{module/common_js}" />
+  <th:block th:insert="~{module/pagination}" />
+</div>

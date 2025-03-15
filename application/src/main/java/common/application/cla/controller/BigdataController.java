@@ -18,24 +18,24 @@ import common.application.request.PageMaker;
 
 @Controller
 @RequestMapping("class")
-public record IoTController(ClassListService classListService) {
+public record BigdataController(ClassListService classListService) {
 
-    @GetMapping("/iot")
+    @GetMapping("/bigdata")
     public String iot() {
-        String url = "cla/IoT/IoT";
+        String url = "cla/bigdata/bigdata";
         return url;
     }
 
-    @GetMapping("/iot/curriculum")
+    @GetMapping("/bigdata/curriculum")
     public String curriculum() {
-        String url = "cla/iot/curriculum";
+        String url = "cla/bigdata/curriculum";
         return url;
     }
 
-    @GetMapping("/iot/enroll")
+    @GetMapping("/bigdata/enroll")
     public String showEnrollPage(@ModelAttribute PageMaker pageMaker, Model model) throws SQLException {
 
-        pageMaker.setFno(2);
+        pageMaker.setFno(3);
 
         List<ClassListVO> classList = classListService.selectClassListByField(pageMaker);
         model.addAttribute("classList", classList);
@@ -44,10 +44,10 @@ public record IoTController(ClassListService classListService) {
         pageMaker.setTotalCount(totalCount);
         model.addAttribute("pageMaker", pageMaker);
 
-        return "cla/iot/enroll";
+        return "cla/bigdata/enroll";
     }
 
-    @PostMapping("/iot/enroll")
+    @PostMapping("/bigdata/enroll")
     public ResponseEntity<String> enrollCourse(@RequestParam String clno) {
         System.out.println("수강 신청 시도: clno = " + clno);
         return ResponseEntity.ok("강의 " + clno + " 수강 신청 완료");

@@ -1,9 +1,13 @@
 <link rel="stylesheet" th:href="@{/css/jinfo.css}" />
-<main class="content">
-    <h1>회원 정보 수정</h1>
-    <div class="info">
+
+<div class="class_content">
+  <section class="class_intro">
+    <h2>회원정보 수정</h2>
+  </section>
+  
+    <div class="m_info">
       <form id="modifyForm" action="modify/post" method="post" enctype="multipart/form-data">
-        <div class="member-profile">
+        <div class="m_member-profile">
             <div class="container_group">
               <div class="mimg" id="pictureView">
               </div>
@@ -62,65 +66,65 @@
 <script th:src="@{/js/regist.js}"></script>
 
 <script>
-	//전화번호 유효성 검사 함수
+   //전화번호 유효성 검사 함수
   function handlePhoneInput(input) {
-			input.value = input.value
-				.replace(/[^0-9]/g, '') // 숫자만 입력
-				.replace(/^(\d{3})(\d{4})(\d{4})$/, '$1-$2-$3'); // 하이픈 자동 추가
-		}
+         input.value = input.value
+            .replace(/[^0-9]/g, '') // 숫자만 입력
+            .replace(/^(\d{3})(\d{4})(\d{4})$/, '$1-$2-$3'); // 하이픈 자동 추가
+      }
 
-	
-	function modify_submit(event) {
+   
+   function modify_submit(event) {
     
-		if (!event) event = window.event; // 이벤트 객체 없을 때 대비
-		if (event) event.preventDefault(); // 기본 제출 방지
-	
-		// 폼 요소 가져오기
-		const form = document.getElementById('modifyForm');
-		const midInput = form.querySelector('input[name="mid"]');
-		const pwdInput = form.querySelector('input[name="pwd"]');
-		const phoneInput = form.querySelector('input[name="phone"]');
-		const birthInput = form.querySelector('input[name="birth"]');
-		const emailInput = form.querySelector('input[name="email"]');
-		const pictureInput = form.querySelector('input[type="file"][name="picture"]');
-		const addressInput = form.querySelector('input[name="address"]');
+      if (!event) event = window.event; // 이벤트 객체 없을 때 대비
+      if (event) event.preventDefault(); // 기본 제출 방지
+   
+      // 폼 요소 가져오기
+      const form = document.getElementById('modifyForm');
+      const midInput = form.querySelector('input[name="mid"]');
+      const pwdInput = form.querySelector('input[name="pwd"]');
+      const phoneInput = form.querySelector('input[name="phone"]');
+      const birthInput = form.querySelector('input[name="birth"]');
+      const emailInput = form.querySelector('input[name="email"]');
+      const pictureInput = form.querySelector('input[type="file"][name="picture"]');
+      const addressInput = form.querySelector('input[name="address"]');
     const nameInput = form.querySelector('input[name="name"]');
     
-		// 필수 입력값 검사
-		if (!pwdInput.value.trim()) {
+      // 필수 입력값 검사
+      if (!pwdInput.value.trim()) {
       alert('비밀번호를 입력해주세요.');
-			pwdInput.focus();
-			return false;
-		}
+         pwdInput.focus();
+         return false;
+      }
     alert("submit");
-		if (!birthInput.value) {
-			alert('생년월일을 선택해주세요.');
-			birthInput.focus();
-			return false;
-		}
-		if (!emailInput.value.trim()) {
-			alert('이메일을 입력해주세요.');
-			emailInput.focus();
-			return false;
-		}
-		if (!phoneInput.value.trim()) {
-			alert('전화번호를 정확히 입력해주세요.');
-			phoneInput.focus();
-			return false;
-		}
-		if (!addressInput.value.trim()) {
-			alert('주소를 입력해주세요.');
-			departmentInput.focus();
-			return false;
-		}
-		if (!pictureInput.files || pictureInput.files.length === 0) {
-			alert('사진을 등록해주세요.');
-			return false;
-		}
-	 // 모든 검사 통과 시 폼 제출 (POST 요청)
-		form.method = "POST"; // 명시적으로 POST 설정
-		form.action = "modify/post"; // 액션 URL 설정
-		form.enctype = "multipart/form-data"; // 파일 업로드를 위한 인코딩 설정
-		form.submit();
-	}
+      if (!birthInput.value) {
+         alert('생년월일을 선택해주세요.');
+         birthInput.focus();
+         return false;
+      }
+      if (!emailInput.value.trim()) {
+         alert('이메일을 입력해주세요.');
+         emailInput.focus();
+         return false;
+      }
+      if (!phoneInput.value.trim()) {
+         alert('전화번호를 정확히 입력해주세요.');
+         phoneInput.focus();
+         return false;
+      }
+      if (!addressInput.value.trim()) {
+         alert('주소를 입력해주세요.');
+         departmentInput.focus();
+         return false;
+      }
+      if (!pictureInput.files || pictureInput.files.length === 0) {
+         alert('사진을 등록해주세요.');
+         return false;
+      }
+    // 모든 검사 통과 시 폼 제출 (POST 요청)
+      form.method = "POST"; // 명시적으로 POST 설정
+      form.action = "modify/post"; // 액션 URL 설정
+      form.enctype = "multipart/form-data"; // 파일 업로드를 위한 인코딩 설정
+      form.submit();
+   }
 </script>

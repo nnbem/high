@@ -1,0 +1,59 @@
+<link rel="stylesheet" th:href="@{/css/ClassStyle.css}" />
+<link rel="stylesheet" th:href="@{/css/MyclassRoomStyle.css}" />
+
+<div class="class_content">
+    <section class="class_intro">
+        <h2>수강중인 강의</h2>
+      </section>
+
+    <!-- 필터 및 검색 -->
+    <div class="filter-bar" style="display: none;" th:object="${pageMaker}">
+        <button class="refresh-btn" onclick="window.location.reload();">⟳</button>
+        <select class="sort-select" name="perPageNum" id="perPageNum">
+            <option value="10" th:selected="${pageMaker.perPageNum == 10}">전체</option>
+            <option value="20" th:selected="${pageMaker.perPageNum == 20}">20개씩</option>
+            <option value="50" th:selected="${pageMaker.perPageNum == 50}">50개씩</option>
+        </select>
+
+        <select class="category-select" name="searchType" id="searchType" th:field="*{searchType}">
+            <option value="">전체</option>
+            <option value="f">분야</option>
+            <option value="n">강의명</option>
+        </select>
+        <div class="search_box">
+            <input type="text" id="keyword" name="keyword" placeholder="검색어를 입력하세요."
+                th:value="${keyword != null ? keyword : ''}" />
+            <button class="search_btn" onclick="search_list(1);">⌕</button>
+        </div>
+    </div>
+
+    <!-- 수강중인 강의 리스트 -->
+    <div class="course-list">
+        <!-- 수강 내역이 없을 때 -->
+        <div th:if="${#lists.isEmpty(historyList)}" class="empty-message">
+            수강 내역이 없습니다.
+        </div>
+
+        <!-- 수강 내역이 있을 때 -->
+        <th:block th:if="${historyList != null and not #lists.isEmpty(historyList)}">
+            <th:block th:each="course : ${historyList}">
+                <div class="course-card">
+                    <div class="course-info">
+                        <span class="tag" th:text="${course.field}"></span>
+                        <h3 th:text="${course.class_name}"></h3>
+                        <p>강의신청일: <span th:text="${#dates.format(course.regDate, 'yyyy-MM-dd')}"></span></p>
+                        <p>나의 학습 진척도: <span th:text="${course.class_history}"></span></p>
+                    </div>
+                    <div class="course-actions">
+                        <button class="continue-btn">이어보기</button>
+                        <button class="disabled-btn">수료증발급</button>
+                        <button class="disabled-btn">시험보러가기</button>
+                    </div>
+                </div>
+            </th:block>
+        </th:block>
+    </div>
+    
+    <!-- 페이징 -->
+    <th:block th:insert="~{module/pagination}" />
+</div>

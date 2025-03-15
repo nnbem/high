@@ -1,11 +1,9 @@
 <link rel="stylesheet" th:href="@{/css/ClassStyle.css}" />
-<link rel="stylesheet" th:href="@{/css/CommonStyle.css}" />
 
 <div class="class_content">
     <section class="class_intro">
         <h2>수강신청</h2>
     </section>
-
     <!-- 필터 및 검색 -->
     <div class="filter-bar" style="display: none;" th:object="${pageMaker}">
         <button class="refresh-btn" onclick="window.location.reload();">⟳</button>
